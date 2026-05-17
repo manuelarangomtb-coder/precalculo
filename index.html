@@ -656,6 +656,7 @@
       <div class="questions" id="questions"></div>
 
       <div class="actions">
+        <button class="primary" id="startBtn">Iniciar parcial</button>
         <button class="primary" id="validateBtn">Validar</button>
         <button class="secondary" id="showProcessBtn" disabled>Ver proceso</button>
         <button class="ghost" id="retryBtn">Volverlo a hacer</button>
@@ -881,6 +882,7 @@
     const timerBox = document.getElementById("timerBox");
     const timerValue = document.getElementById("timerValue");
     const feedback = document.getElementById("feedback");
+    const startBtn = document.getElementById("startBtn");
     const validateBtn = document.getElementById("validateBtn");
     const showProcessBtn = document.getElementById("showProcessBtn");
     const retryBtn = document.getElementById("retryBtn");
@@ -891,6 +893,7 @@
       return {
         remaining: LEVEL_DURATION_SECONDS,
         answers: quizzes[level].questions.map(() => null),
+        started: false,
         validated: false,
         processVisible: false,
         timedOut: false,
@@ -927,7 +930,7 @@
       stopTimer();
       updateTimerDisplay();
       const state = getState();
-      if (state.validated) return;
+      if (!state.started || state.validated) return;
 
       timerId = setInterval(() => {
         const activeState = getState();
@@ -964,10 +967,13 @@
         ? state.timedOut
           ? "El tiempo terminó. Se calificó con las respuestas que alcanzaste a marcar."
           : "Nivel validado. Puedes revisar cada proceso o volver a intentarlo."
-        : "Responde las 10 preguntas del nivel activo antes de validar. El reloj de este nivel ya está corriendo.";
+        : state.started
+          ? "Responde las 10 preguntas del nivel activo antes de validar. El reloj de este nivel ya está corriendo."
+          : "Lee la teoría con calma. Cuando estés listo, presiona Iniciar parcial para activar las respuestas y el reloj.";
+      startBtn.disabled = state.started || state.validated;
       showProcessBtn.disabled = !state.validated;
       showProcessBtn.textContent = state.processVisible ? "Ocultar proceso" : "Ver proceso";
-      validateBtn.disabled = state.validated;
+      validateBtn.disabled = !state.started || state.validated;
 
       questionsEl.innerHTML = quiz.questions.map((item, index) => `
         <article class="question-card" data-index="${index}">
@@ -977,8 +983,8 @@
           </div>
           <div class="options">
             ${item.options.map((option, optionIndex) => `
-              <label class="option ${state.validated ? "locked" : ""}">
-                <input type="radio" name="${currentLevel}-${index}" value="${optionIndex}" ${state.answers[index] === optionIndex ? "checked" : ""} ${state.validated ? "disabled" : ""}>
+              <label class="option ${!state.started || state.validated ? "locked" : ""}">
+                <input type="radio" name="${currentLevel}-${index}" value="${optionIndex}" ${state.answers[index] === optionIndex ? "checked" : ""} ${!state.started || state.validated ? "disabled" : ""}>
                 <span>${String.fromCharCode(65 + optionIndex)}. ${option}</span>
               </label>
             `).join("")}
@@ -1025,6 +1031,10 @@
 
     function validateQuiz({ force = false, reason = "manual" } = {}) {
       const state = getState();
+      if (!state.started && !force) {
+        feedback.textContent = "Primero presiona Iniciar parcial. Así el tiempo solo cuenta cuando realmente empiezas.";
+        return;
+      }
       const answers = getAnswers();
       state.answers = answers;
       const missing = answers.filter(answer => answer === null).length;
@@ -1040,6 +1050,7 @@
       stopTimer();
       scoreBox.textContent = `${score}/10 correctas`;
       showProcessBtn.disabled = false;
+      startBtn.disabled = true;
       validateBtn.disabled = true;
 
       markAnswers();
@@ -1070,6 +1081,14 @@
       window.scrollTo({ top: document.querySelector(".quiz-shell").offsetTop - 12, behavior: "smooth" });
     }
 
+    function startQuiz() {
+      const state = getState();
+      if (state.started || state.validated) return;
+      state.started = true;
+      feedback.textContent = "Parcial iniciado. Tienes una hora para completar este nivel.";
+      renderQuiz();
+    }
+
     questionsEl.addEventListener("change", event => {
       if (!event.target.matches("input[type='radio']")) return;
       saveCurrentAnswers();
@@ -1086,6 +1105,7 @@
     });
 
     validateBtn.addEventListener("click", validateQuiz);
+    startBtn.addEventListener("click", startQuiz);
     showProcessBtn.addEventListener("click", toggleProcess);
     retryBtn.addEventListener("click", retryQuiz);
 
