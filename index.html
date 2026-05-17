@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parcial interactivo de precálculo</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1f2937;
+      --muted: #5b6472;
+      --line: #d7dee8;
+      --paper: #fffaf2;
+      --panel: #ffffff;
+      --blue: #2563eb;
+      --teal: #0f766e;
+      --rose: #be123c;
+      --amber: #b45309;
+      --green: #15803d;
+      --violet: #6d28d9;
+      --shadow: 0 18px 45px rgba(31, 41, 55, .12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(37, 99, 235, .14), transparent 28rem),
+        radial-gradient(circle at 95% 12%, rgba(15, 118, 110, .15), transparent 25rem),
+        linear-gradient(180deg, #f7fbff 0%, #fffaf2 58%, #f7fbff 100%);
+      line-height: 1.5;
+    }
+
+    header {
+      padding: 34px clamp(18px, 5vw, 70px) 18px;
+    }
+
+    .hero {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 5vw, 4.8rem);
+      line-height: .98;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 730px;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.7vw, 1.18rem);
+    }
+
+    .hero strong {
+      color: var(--teal);
+    }
+
+    .formula-board {
+      background: rgba(255, 255, 255, .78);
+      border: 1px solid rgba(215, 222, 232, .85);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .formula-board h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .formula-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .formula {
+      min-height: 74px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-weight: 750;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 12px clamp(18px, 5vw, 70px) 54px;
+    }
+
+    .guide {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin: 18px 0 26px;
+    }
+
+    .guide article,
+    .sim-panel,
+    .quiz-shell,
+    .question-card {
+      background: rgba(255, 255, 255, .86);
+      border: 1px solid rgba(215, 222, 232, .92);
+      border-radius: 8px;
+      box-shadow: 0 12px 30px rgba(31, 41, 55, .08);
+    }
+
+    .guide article {
+      padding: 16px;
+    }
+
+    .guide h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+    }
+
+    .guide p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .simulations {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+      gap: 16px;
+      margin: 18px 0 28px;
+    }
+
+    .sim-panel {
+      padding: 16px;
+    }
+
+    .sim-panel h2 {
+      margin: 0 0 6px;
+      font-size: 1.05rem;
+    }
+
+    .sim-panel p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    canvas {
+      width: 100%;
+      min-height: 260px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--teal);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #ecfeff;
+      color: #155e75;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .quiz-shell {
+      overflow: hidden;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-bottom: 1px solid var(--line);
+      background: #f8fafc;
+    }
+
+    .tab {
+      border: 0;
+      border-right: 1px solid var(--line);
+      padding: 14px 10px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 800;
+      cursor: pointer;
+      font-size: .98rem;
+    }
+
+    .tab:last-child {
+      border-right: 0;
+    }
+
+    .tab.active {
+      background: #fff;
+      color: var(--blue);
+      box-shadow: inset 0 -4px 0 var(--blue);
+    }
+
+    .quiz-head {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .quiz-head h2 {
+      margin: 0 0 4px;
+      font-size: 1.4rem;
+    }
+
+    .quiz-head p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .score-box {
+      min-width: 190px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fafc;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .questions {
+      display: grid;
+      gap: 14px;
+      padding: 0 20px 20px;
+    }
+
+    .question-card {
+      padding: 16px;
+    }
+
+    .question-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .question-card h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .badge {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      padding: 4px 9px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-size: .8rem;
+      font-weight: 800;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .option {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 9px;
+      align-items: center;
+      min-height: 48px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .option:has(input:checked) {
+      border-color: var(--blue);
+      background: #eff6ff;
+    }
+
+    .option.correct {
+      border-color: rgba(21, 128, 61, .65);
+      background: #f0fdf4;
+    }
+
+    .option.wrong {
+      border-color: rgba(190, 18, 60, .55);
+      background: #fff1f2;
+    }
+
+    .process {
+      display: none;
+      margin-top: 12px;
+      border-left: 4px solid var(--teal);
+      background: #f0fdfa;
+      border-radius: 0 8px 8px 0;
+      padding: 13px;
+    }
+
+    .process.visible {
+      display: block;
+    }
+
+    .process strong {
+      color: var(--teal);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      padding: 18px 20px 22px;
+      border-top: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    button.primary,
+    button.secondary,
+    button.ghost {
+      border: 0;
+      border-radius: 8px;
+      min-height: 44px;
+      padding: 10px 16px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    button.primary {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    button.secondary {
+      background: var(--teal);
+      color: #fff;
+    }
+
+    button.ghost {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: .45;
+    }
+
+    .feedback {
+      flex: 1 1 280px;
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    .complete-note {
+      color: var(--amber);
+    }
+
+    footer {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 clamp(18px, 5vw, 70px) 36px;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    @media (max-width: 850px) {
+      .hero,
+      .guide,
+      .simulations,
+      .quiz-head {
+        grid-template-columns: 1fr;
+      }
+
+      .score-box {
+        min-width: 0;
+      }
+
+      .options {
+        grid-template-columns: 1fr;
+      }
+
+      .tabs {
+        grid-template-columns: 1fr;
+      }
+
+      .tab {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <section class="hero" aria-labelledby="title">
+      <div>
+        <h1 id="title">Parcial interactivo de precálculo 🧭</h1>
+        <p>
+          Práctica basada en <strong>P4_sol 1B.pdf</strong>. Trabaja con triángulos rectángulos,
+          identidades, ecuaciones trigonométricas, ángulos especiales y gráficas sinusoidales.
+          La retroalimentación se desbloquea al validar cada nivel para que primero intentes pensar
+          como en un parcial real.
+        </p>
+      </div>
+      <aside class="formula-board" aria-label="Recordatorio de fórmulas">
+        <h2>Recordatorio rápido ✨</h2>
+        <div class="formula-grid">
+          <div class="formula">sen²(θ) + cos²(θ) = 1</div>
+          <div class="formula">tan(θ) = sen(θ) / cos(θ)</div>
+          <div class="formula">sen(2θ) = 2 sen(θ) cos(θ)</div>
+          <div class="formula">Periodo de a sen(bx - c): 2π / |b|</div>
+        </div>
+      </aside>
+    </section>
+  </header>
+
+  <main>
+    <section class="guide" aria-label="Consejos para resolver">
+      <article>
+        <h3>1. Dibuja antes de calcular 🎯</h3>
+        <p>Cuando aparece arccos, arcsen o tan, imagina un triángulo o el círculo unitario. Eso reduce errores de signo.</p>
+      </article>
+      <article>
+        <h3>2. Cuida el cuadrante 🧠</h3>
+        <p>El intervalo indicado decide si la respuesta es positiva o negativa. El signo no es un detalle: es parte del concepto.</p>
+      </article>
+      <article>
+        <h3>3. Valida con calma 🌱</h3>
+        <p>Equivocarse aquí es información útil. Mira el proceso, localiza el paso confuso y vuelve a intentarlo.</p>
+      </article>
+    </section>
+
+    <section class="simulations" aria-label="Simulaciones">
+      <article class="sim-panel">
+        <h2>Círculo unitario interactivo</h2>
+        <p>Mueve el ángulo y observa cómo cambian seno, coseno y tangente.</p>
+        <canvas id="circleCanvas" width="720" height="420"></canvas>
+        <div class="controls">
+          <input id="angleRange" type="range" min="0" max="360" value="210" aria-label="Ángulo en grados">
+          <span class="pill" id="angleReadout">210°</span>
+        </div>
+      </article>
+      <article class="sim-panel">
+        <h2>Transformación de seno</h2>
+        <p>Modelo del parcial: f(x)=2 sen(x/2 - π/4). Observa amplitud 2, periodo 4π y desfase π/2.</p>
+        <canvas id="waveCanvas" width="760" height="420"></canvas>
+      </article>
+    </section>
+
+    <section class="quiz-shell" aria-label="Parcial por niveles">
+      <nav class="tabs" aria-label="Niveles del parcial">
+        <button class="tab active" data-level="basico">Básico 🟢</button>
+        <button class="tab" data-level="intermedio">Intermedio 🟡</button>
+        <button class="tab" data-level="avanzado">Avanzado 🔴</button>
+      </nav>
+
+      <div class="quiz-head">
+        <div>
+          <h2 id="levelTitle">Nivel básico</h2>
+          <p id="levelDescription">10 preguntas para afianzar ángulos especiales, razones trigonométricas y signos.</p>
+        </div>
+        <div class="score-box" id="scoreBox">Sin validar</div>
+      </div>
+
+      <div class="questions" id="questions"></div>
+
+      <div class="actions">
+        <button class="primary" id="validateBtn">Validar</button>
+        <button class="secondary" id="showProcessBtn" disabled>Ver proceso</button>
+        <button class="ghost" id="retryBtn">Volverlo a hacer</button>
+        <span class="feedback" id="feedback">Responde las 10 preguntas del nivel activo.</span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Diseñado para practicar con intentos ilimitados. El objetivo no es adivinar: es reconocer patrones,
+    justificar cada paso y ganar confianza con trigonometría.
+  </footer>
+
+  <script>
+    const quizzes = {
+      basico: {
+        title: "Nivel básico",
+        description: "10 preguntas para afianzar ángulos especiales, razones trigonométricas y signos.",
+        questions: [
+          {
+            q: "Si cos(θ)=7/√51 y θ está en el primer cuadrante, ¿cuál es tan(θ)?",
+            options: ["√2/7", "7/√2", "√51/7", "2/7"],
+            answer: 0,
+            process: "Como cos(θ)=adyacente/hipotenusa=7/√51, el cateto opuesto mide √(51-49)=√2. Entonces tan(θ)=opuesto/adyacente=√2/7. Bien si pensaste en un triángulo: esa imagen evita memorizar sin sentido."
+          },
+          {
+            q: "¿Cuál es arcsen(-√3/2)?",
+            options: ["-π/3", "π/3", "4π/3", "-2π/3"],
+            answer: 0,
+            process: "El rango principal de arcsen es [-π/2, π/2]. Allí el ángulo cuyo seno es -√3/2 es -π/3. Si elegiste 4π/3, reconociste el valor en el círculo, pero arcsen pide el valor principal."
+          },
+          {
+            q: "En un triángulo rectángulo con hipotenusa 6 y ángulo π/6, ¿cuánto mide el cateto opuesto a ese ángulo?",
+            options: ["3", "3√3", "6√3", "√3"],
+            answer: 0,
+            process: "sen(π/6)=opuesto/6=1/2. Por eso opuesto=6·1/2=3. Este paso es pequeño, pero es la base de muchos ejercicios más largos."
+          },
+          {
+            q: "Si tan(θ)=5/4 y en el triángulo el cateto opuesto a θ es x+2 y el adyacente es x, ¿cuál es x?",
+            options: ["8", "6", "10", "4"],
+            answer: 0,
+            process: "Plantea (x+2)/x=5/4. Al multiplicar: 4x+8=5x, entonces x=8. El planteamiento correcto vale más que hacer cuentas rápido."
+          },
+          {
+            q: "¿En qué cuadrante está α si α ∈ (π, 3π/2)?",
+            options: ["III", "II", "IV", "I"],
+            answer: 0,
+            process: "El intervalo entre π y 3π/2 corresponde al tercer cuadrante. Allí seno y coseno son negativos, mientras tangente y cotangente son positivas."
+          },
+          {
+            q: "Si cot(α)=4 y α está en el tercer cuadrante, ¿qué signo tiene sen(α)?",
+            options: ["Negativo", "Positivo", "Cero", "No se puede saber"],
+            answer: 0,
+            process: "En el tercer cuadrante la coordenada y es negativa; por eso sen(α) es negativo. Cotangente positiva allí no significa que seno sea positivo: significa que seno y coseno tienen el mismo signo."
+          },
+          {
+            q: "¿Cuál es cos(π/6)?",
+            options: ["√3/2", "1/2", "√2/2", "1"],
+            answer: 0,
+            process: "En el triángulo 30°-60°-90°, cos(π/6)=cos(30°)=√3/2. Una buena estrategia es recordar el triángulo, no una lista suelta."
+          },
+          {
+            q: "¿Cuál es sen(3π/2)?",
+            options: ["-1", "1", "0", "√3/2"],
+            answer: 0,
+            process: "En 3π/2 el punto del círculo unitario es (0,-1). El seno es la coordenada y, por eso vale -1."
+          },
+          {
+            q: "¿Cuál identidad se usa para demostrar sen(θ+π)+sen(θ)=0?",
+            options: ["sen(a+b)=sen a cos b + cos a sen b", "cos²θ+sen²θ=0", "tan θ=cos θ/sen θ", "sen(2θ)=sen²θ"],
+            answer: 0,
+            process: "Se aplica la suma de ángulos: sen(θ+π)=senθ cosπ + cosθ senπ = senθ(-1)+cosθ(0)=-senθ. Luego -senθ+senθ=0."
+          },
+          {
+            q: "Para f(x)=2 sen(x/2 - π/4), ¿cuál es la amplitud?",
+            options: ["2", "1/2", "4π", "π/2"],
+            answer: 0,
+            process: "La amplitud es el valor absoluto del número que multiplica al seno. En f(x)=2 sen(...), la amplitud es |2|=2."
+          }
+        ]
+      },
+      intermedio: {
+        title: "Nivel intermedio",
+        description: "10 preguntas para resolver ecuaciones, simplificar radicales y conectar gráfica con fórmula.",
+        questions: [
+          {
+            q: "Resuelve en [0,2π): 8 cos(θ)+√48=0.",
+            options: ["5π/6 y 7π/6", "π/6 y 11π/6", "π/3 y 5π/3", "2π/3 y 4π/3"],
+            answer: 0,
+            process: "√48=4√3. Entonces 8cosθ=-4√3 y cosθ=-√3/2. El coseno es negativo en cuadrantes II y III con referencia π/6: θ=5π/6 y 7π/6."
+          },
+          {
+            q: "Resuelve en [0,2π): [sen(θ)+cos(θ)]²=1+cos(θ).",
+            options: ["π/2, 3π/2, π/6, 5π/6", "0, π, π/6, 5π/6", "π/2, π, 7π/6", "π/6, 7π/6"],
+            answer: 0,
+            process: "Expande: sen²θ+2senθcosθ+cos²θ=1+cosθ. Como sen²θ+cos²θ=1, queda 2senθcosθ=cosθ. Factoriza: cosθ(2senθ-1)=0. Así cosθ=0 da π/2,3π/2; senθ=1/2 da π/6,5π/6."
+          },
+          {
+            q: "En un triángulo rectángulo con hipotenusa 6 y ángulo π/6, ¿cuál es el área?",
+            options: ["9√3/2", "9√3", "3√3/2", "18√3"],
+            answer: 0,
+            process: "Los catetos son opuesto=6sen(π/6)=3 y adyacente=6cos(π/6)=3√3. El área es (3·3√3)/2=9√3/2."
+          },
+          {
+            q: "Si cot(α)=4 y α∈(π,3π/2), ¿cuál es sen(α)?",
+            options: ["-1/√17", "1/√17", "-4/√17", "4/√17"],
+            answer: 0,
+            process: "cotα=adyacente/opuesto=4/1 en magnitudes; la hipotenusa es √17. En cuadrante III el seno es negativo, así que senα=-1/√17."
+          },
+          {
+            q: "Para f(x)=2 sen(x/2 - π/4), ¿cuál es el período?",
+            options: ["4π", "2π", "π/2", "π/4"],
+            answer: 0,
+            process: "El coeficiente de x dentro del seno es b=1/2. El período es 2π/|b|=2π/(1/2)=4π."
+          },
+          {
+            q: "Para f(x)=2 sen(x/2 - π/4), ¿cuál es el desfase horizontal?",
+            options: ["π/2 a la derecha", "π/4 a la derecha", "π/2 a la izquierda", "π/4 a la izquierda"],
+            answer: 0,
+            process: "Reescribe x/2 - π/4 como (1/2)(x - π/2). Por eso la gráfica se desplaza π/2 a la derecha."
+          },
+          {
+            q: "Si un punto terminal del ángulo θ es (-4,-1), ¿cuál es sen(θ)?",
+            options: ["-1/√17", "-4/√17", "1/√17", "4/√17"],
+            answer: 0,
+            process: "La distancia al origen es r=√((-4)²+(-1)²)=√17. El seno es y/r=-1/√17."
+          },
+          {
+            q: "Con el mismo punto (-4,-1), ¿cuál es cos(θ)?",
+            options: ["-4/√17", "-1/√17", "4/√17", "1/√17"],
+            answer: 0,
+            process: "El coseno es x/r. Como x=-4 y r=√17, cosθ=-4/√17. El signo coincide con el cuadrante III."
+          },
+          {
+            q: "Usando sen(2θ)=2senθcosθ, si senθ=-1/√17 y cosθ=-4/√17, ¿cuál es sen(2θ)?",
+            options: ["8/17", "-8/17", "4/17", "-4/17"],
+            answer: 0,
+            process: "sen(2θ)=2(-1/√17)(-4/√17)=8/17. Dos negativos producen positivo; notar eso evita perder un resultado correcto."
+          },
+          {
+            q: "¿Cuál es el valor exacto de 6tan(-5π/3)+sen(3π/2)?",
+            options: ["6√3 - 1", "-6√3 - 1", "6√3 + 1", "-1"],
+            answer: 0,
+            process: "-5π/3 es coterminal con π/3, entonces tan(-5π/3)=√3. Además sen(3π/2)=-1. Resultado: 6√3-1."
+          }
+        ]
+      },
+      avanzado: {
+        title: "Nivel avanzado",
+        description: "10 preguntas con distractores cercanos para practicar razonamiento completo y control de errores.",
+        questions: [
+          {
+            q: "Si θ=arccos(7/√51), ¿por qué θ debe estar en el primer cuadrante?",
+            options: ["Porque el rango de arccos es [0,π] y el coseno dado es positivo", "Porque arccos siempre da ángulos negativos", "Porque √51 es mayor que 7", "Porque tan siempre es positiva"],
+            answer: 0,
+            process: "arccos entrega valores en [0,π]. Si el coseno es positivo, dentro de ese rango el ángulo cae en el cuadrante I. Esta restricción es lo que justifica usar tan positiva."
+          },
+          {
+            q: "¿Cuál opción reescribe correctamente f(x)=2sen(x/2-π/4) para leer su desfase?",
+            options: ["2sen((1/2)(x-π/2))", "2sen((1/2)(x-π/4))", "2sen(2(x-π/2))", "2sen(x-π/2)"],
+            answer: 0,
+            process: "Factoriza 1/2: x/2-π/4=(1/2)(x-π/2). La forma a sen(b(x-h)) muestra desfase h=π/2."
+          },
+          {
+            q: "En el ejercicio con CD=√18, ángulos 30° en A y 60° en B, ¿cuál es AB?",
+            options: ["2√6", "3√6", "√6", "4√6"],
+            answer: 0,
+            process: "En el triángulo grande, tan30°=√18/AC, entonces AC=√18/(1/√3)=3√6. En el pequeño, tan60°=√18/BC, entonces BC=√18/√3=√6. Por tanto AB=AC-BC=2√6."
+          },
+          {
+            q: "¿Cuál paso evita soluciones perdidas en cosθ(2senθ-1)=0?",
+            options: ["Resolver cosθ=0 y también 2senθ-1=0", "Dividir todo por cosθ", "Elevar ambos lados al cuadrado", "Tomar solo senθ=1/2"],
+            answer: 0,
+            process: "Si divides por cosθ, pierdes los casos donde cosθ=0. En productos igualados a cero, cada factor puede ser cero y debe revisarse."
+          },
+          {
+            q: "Si tanθ=(x+2)/x=5/4, ¿qué interpretación geométrica es correcta?",
+            options: ["x+2 es el cateto opuesto y x el adyacente respecto a θ", "x es la hipotenusa", "x+2 es el adyacente", "5 y 4 son ángulos"],
+            answer: 0,
+            process: "Tangente compara opuesto/adyacente. Identificar los lados desde el ángulo θ es el razonamiento central; la ecuación sale después."
+          },
+          {
+            q: "¿Por qué sen(θ+π)+senθ=0 para todo θ?",
+            options: ["Porque sumar π cambia el signo del seno", "Porque senπ=1", "Porque cosπ=0", "Porque θ debe ser π/2"],
+            answer: 0,
+            process: "Geométricamente, θ+π apunta al punto opuesto del círculo unitario, así que su coordenada y es la opuesta. Algebraicamente, sen(θ+π)=-senθ."
+          },
+          {
+            q: "Si cosθ=-√3/2 en [0,2π), ¿qué característica comparten las soluciones?",
+            options: ["Están en cuadrantes II y III con ángulo de referencia π/6", "Están en I y IV con referencia π/6", "Están solo en π/2", "Están en II y III con referencia π/3"],
+            answer: 0,
+            process: "El valor absoluto √3/2 corresponde a referencia π/6 para coseno. Como el coseno es negativo, los cuadrantes son II y III."
+          },
+          {
+            q: "En arcsen(-√3/2), ¿cuál sería un distractor común pero fuera del rango principal?",
+            options: ["4π/3", "-π/3", "0", "π/6"],
+            answer: 0,
+            process: "4π/3 tiene seno -√3/2, pero arcsen no devuelve cualquier ángulo: devuelve uno en [-π/2,π/2]. Por eso la respuesta principal es -π/3."
+          },
+          {
+            q: "Para el punto (-4,-1), ¿por qué sen(2θ) sale positivo aunque θ está en el cuadrante III?",
+            options: ["Porque senθ y cosθ son ambos negativos y su producto es positivo", "Porque todo ángulo doble es positivo", "Porque √17 es negativo", "Porque el seno nunca cambia de signo"],
+            answer: 0,
+            process: "La fórmula sen(2θ)=2senθcosθ multiplica dos cantidades negativas. El resultado es positivo. Esta es una buena oportunidad para separar intuición geométrica de cálculo exacto."
+          },
+          {
+            q: "Si al validar sacas pocas respuestas correctas, ¿cuál es la mejor acción matemática?",
+            options: ["Revisar procesos, detectar el patrón del error y repetir", "Cambiar respuestas al azar", "Memorizar solo las letras correctas", "Evitar los ejercicios con radicales"],
+            answer: 0,
+            process: "El aprendizaje mejora cuando identificas el tipo de error: signo, cuadrante, fórmula o álgebra. Repetir con un objetivo concreto reduce frustración y convierte el error en guía."
+          }
+        ]
+      }
+    };
+
+    let currentLevel = "basico";
+    let validated = false;
+    let processVisible = false;
+
+    const questionsEl = document.getElementById("questions");
+    const scoreBox = document.getElementById("scoreBox");
+    const feedback = document.getElementById("feedback");
+    const validateBtn = document.getElementById("validateBtn");
+    const showProcessBtn = document.getElementById("showProcessBtn");
+    const retryBtn = document.getElementById("retryBtn");
+    const levelTitle = document.getElementById("levelTitle");
+    const levelDescription = document.getElementById("levelDescription");
+
+    function renderQuiz() {
+      const quiz = quizzes[currentLevel];
+      validated = false;
+      processVisible = false;
+      levelTitle.textContent = quiz.title;
+      levelDescription.textContent = quiz.description;
+      scoreBox.textContent = "Sin validar";
+      feedback.textContent = "Responde las 10 preguntas del nivel activo.";
+      showProcessBtn.disabled = true;
+      showProcessBtn.textContent = "Ver proceso";
+      validateBtn.disabled = false;
+
+      questionsEl.innerHTML = quiz.questions.map((item, index) => `
+        <article class="question-card" data-index="${index}">
+          <div class="question-top">
+            <h3>${index + 1}. ${item.q}</h3>
+            <span class="badge">Pregunta ${index + 1}/10</span>
+          </div>
+          <div class="options">
+            ${item.options.map((option, optionIndex) => `
+              <label class="option">
+                <input type="radio" name="${currentLevel}-${index}" value="${optionIndex}">
+                <span>${String.fromCharCode(65 + optionIndex)}. ${option}</span>
+              </label>
+            `).join("")}
+          </div>
+          <div class="process" id="process-${index}">
+            <strong>Proceso explicado:</strong> ${item.process}
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function getAnswers() {
+      return quizzes[currentLevel].questions.map((_, index) => {
+        const checked = document.querySelector(`input[name="${currentLevel}-${index}"]:checked`);
+        return checked ? Number(checked.value) : null;
+      });
+    }
+
+    function validateQuiz() {
+      const answers = getAnswers();
+      const missing = answers.filter(answer => answer === null).length;
+      if (missing > 0) {
+        feedback.innerHTML = `<span class="complete-note">Te faltan ${missing} pregunta(s). Completa el nivel para activar la validación.</span>`;
+        return;
+      }
+
+      const quiz = quizzes[currentLevel];
+      let score = 0;
+      answers.forEach((answer, index) => {
+        if (answer === quiz.questions[index].answer) score++;
+      });
+
+      validated = true;
+      scoreBox.textContent = `${score}/10 correctas`;
+      showProcessBtn.disabled = false;
+      validateBtn.disabled = true;
+
+      document.querySelectorAll(".question-card").forEach((card, index) => {
+        card.querySelectorAll(".option").forEach((label, optionIndex) => {
+          label.classList.toggle("correct", optionIndex === quiz.questions[index].answer);
+          label.classList.toggle("wrong", optionIndex === answers[index] && optionIndex !== quiz.questions[index].answer);
+        });
+      });
+
+      const message = score >= 8
+        ? "Muy buen dominio. Revisa los procesos para fortalecer precisión y velocidad."
+        : score >= 5
+          ? "Hay base suficiente. Mira los procesos y ubica si los errores fueron de signo, cuadrante o álgebra."
+          : "Este resultado no define tu capacidad. Úsalo como mapa: empieza por cuadrantes, razones y fórmulas clave.";
+      feedback.textContent = message;
+    }
+
+    function toggleProcess() {
+      if (!validated) return;
+      processVisible = !processVisible;
+      document.querySelectorAll(".process").forEach(process => {
+        process.classList.toggle("visible", processVisible);
+      });
+      showProcessBtn.textContent = processVisible ? "Ocultar proceso" : "Ver proceso";
+    }
+
+    function retryQuiz() {
+      renderQuiz();
+      window.scrollTo({ top: document.querySelector(".quiz-shell").offsetTop - 12, behavior: "smooth" });
+    }
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
+        tab.classList.add("active");
+        currentLevel = tab.dataset.level;
+        renderQuiz();
+      });
+    });
+
+    validateBtn.addEventListener("click", validateQuiz);
+    showProcessBtn.addEventListener("click", toggleProcess);
+    retryBtn.addEventListener("click", retryQuiz);
+
+    const angleRange = document.getElementById("angleRange");
+    const angleReadout = document.getElementById("angleReadout");
+    const circleCanvas = document.getElementById("circleCanvas");
+    const waveCanvas = document.getElementById("waveCanvas");
+
+    function drawCircle() {
+      const ctx = circleCanvas.getContext("2d");
+      const w = circleCanvas.width;
+      const h = circleCanvas.height;
+      const cx = w * .42;
+      const cy = h * .5;
+      const r = Math.min(w, h) * .32;
+      const deg = Number(angleRange.value);
+      const rad = deg * Math.PI / 180;
+      const x = Math.cos(rad);
+      const y = Math.sin(rad);
+      const px = cx + r * x;
+      const py = cy - r * y;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "#d7dee8";
+      for (let gx = 30; gx < w; gx += 30) {
+        ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke();
+      }
+      for (let gy = 30; gy < h; gy += 30) {
+        ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke();
+      }
+
+      ctx.strokeStyle = "#334155";
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(cx - r - 28, cy); ctx.lineTo(cx + r + 28, cy); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx, cy + r + 28); ctx.lineTo(cx, cy - r - 28); ctx.stroke();
+
+      ctx.strokeStyle = "#0f766e";
+      ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+
+      ctx.strokeStyle = "#2563eb";
+      ctx.lineWidth = 5;
+      ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke();
+
+      ctx.strokeStyle = "#be123c";
+      ctx.lineWidth = 3;
+      ctx.setLineDash([8, 7]);
+      ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px, cy); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(cx, py); ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = "#2563eb";
+      ctx.beginPath(); ctx.arc(px, py, 8, 0, Math.PI * 2); ctx.fill();
+
+      ctx.fillStyle = "#1f2937";
+      ctx.font = "700 22px system-ui";
+      ctx.fillText(`θ = ${deg}°`, w * .72, 96);
+      ctx.font = "650 18px system-ui";
+      ctx.fillText(`cos θ ≈ ${x.toFixed(3)}`, w * .72, 140);
+      ctx.fillText(`sen θ ≈ ${y.toFixed(3)}`, w * .72, 172);
+      ctx.fillText(`tan θ ≈ ${Math.abs(x) < .001 ? "indef." : (y / x).toFixed(3)}`, w * .72, 204);
+      ctx.fillStyle = "#5b6472";
+      ctx.font = "15px system-ui";
+      ctx.fillText("El signo depende del cuadrante.", w * .72, 248);
+      angleReadout.textContent = `${deg}°`;
+    }
+
+    function drawWave() {
+      const ctx = waveCanvas.getContext("2d");
+      const w = waveCanvas.width;
+      const h = waveCanvas.height;
+      const pad = 48;
+      const mid = h / 2;
+      const xMin = -Math.PI;
+      const xMax = 5 * Math.PI;
+      const yScale = 70;
+      const mapX = value => pad + (value - xMin) / (xMax - xMin) * (w - 2 * pad);
+      const mapY = value => mid - value * yScale;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = "#d7dee8";
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 12; i++) {
+        const x = pad + i * (w - 2 * pad) / 12;
+        ctx.beginPath(); ctx.moveTo(x, 26); ctx.lineTo(x, h - 30); ctx.stroke();
+      }
+      for (let y = -2; y <= 2; y++) {
+        ctx.beginPath(); ctx.moveTo(pad, mapY(y)); ctx.lineTo(w - pad, mapY(y)); ctx.stroke();
+      }
+
+      ctx.strokeStyle = "#334155";
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(pad, mid); ctx.lineTo(w - pad, mid); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(mapX(0), 28); ctx.lineTo(mapX(0), h - 28); ctx.stroke();
+
+      ctx.strokeStyle = "#2563eb";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      for (let px = 0; px <= w - 2 * pad; px++) {
+        const x = xMin + px / (w - 2 * pad) * (xMax - xMin);
+        const y = 2 * Math.sin(x / 2 - Math.PI / 4);
+        const sx = mapX(x);
+        const sy = mapY(y);
+        if (px === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+      }
+      ctx.stroke();
+
+      const marks = [
+        [Math.PI / 2, "π/2"],
+        [3 * Math.PI / 2, "3π/2"],
+        [5 * Math.PI / 2, "5π/2"],
+        [7 * Math.PI / 2, "7π/2"],
+        [9 * Math.PI / 2, "9π/2"]
+      ];
+      ctx.fillStyle = "#1f2937";
+      ctx.font = "700 15px system-ui";
+      marks.forEach(([x, label]) => {
+        const sx = mapX(x);
+        ctx.beginPath(); ctx.arc(sx, mid, 4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillText(label, sx - 16, mid + 24);
+      });
+
+      ctx.fillStyle = "#0f766e";
+      ctx.font = "800 18px system-ui";
+      ctx.fillText("Amplitud 2", pad, 36);
+      ctx.fillText("Periodo 4π", pad + 150, 36);
+      ctx.fillText("Desfase π/2", pad + 300, 36);
+    }
+
+    angleRange.addEventListener("input", drawCircle);
+    window.addEventListener("resize", () => {
+      drawCircle();
+      drawWave();
+    });
+
+    renderQuiz();
+    drawCircle();
+    drawWave();
+  </script>
+</body>
+</html>
