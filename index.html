@@ -111,6 +111,63 @@
       margin: 18px 0 26px;
     }
 
+    .theory {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+      gap: 16px;
+      margin: 18px 0 26px;
+    }
+
+    .theory-panel,
+    .tips-panel {
+      background: rgba(255, 255, 255, .88);
+      border: 1px solid rgba(215, 222, 232, .92);
+      border-radius: 8px;
+      box-shadow: 0 12px 30px rgba(31, 41, 55, .08);
+      padding: 18px;
+    }
+
+    .theory h2,
+    .tips-panel h2 {
+      margin: 0 0 12px;
+      font-size: 1.18rem;
+    }
+
+    .concept-list,
+    .tips-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .concept-list li,
+    .tips-list li {
+      border-left: 4px solid var(--blue);
+      background: #f8fafc;
+      border-radius: 0 8px 8px 0;
+      padding: 11px 12px;
+    }
+
+    .tips-list li {
+      border-left-color: var(--teal);
+      background: #f0fdfa;
+    }
+
+    .concept-list strong,
+    .tips-list strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--ink);
+    }
+
+    .concept-list span,
+    .tips-list span {
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
     .guide article,
     .sim-panel,
     .quiz-shell,
@@ -252,6 +309,46 @@
       font-weight: 800;
     }
 
+    .status-stack {
+      display: grid;
+      gap: 10px;
+      min-width: 220px;
+    }
+
+    .timer-box {
+      padding: 12px;
+      border: 1px solid rgba(180, 83, 9, .25);
+      border-radius: 8px;
+      background: #fffbeb;
+      text-align: center;
+    }
+
+    .timer-label {
+      display: block;
+      color: var(--amber);
+      font-size: .78rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .timer-value {
+      display: block;
+      color: var(--ink);
+      font-size: 1.45rem;
+      line-height: 1.1;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timer-box.warning {
+      background: #fff1f2;
+      border-color: rgba(190, 18, 60, .35);
+    }
+
+    .timer-box.warning .timer-label {
+      color: var(--rose);
+    }
+
     .questions {
       display: grid;
       gap: 14px;
@@ -317,6 +414,11 @@
     .option.wrong {
       border-color: rgba(190, 18, 60, .55);
       background: #fff1f2;
+    }
+
+    .option.locked {
+      cursor: not-allowed;
+      opacity: .86;
     }
 
     .process {
@@ -398,6 +500,7 @@
 
     @media (max-width: 850px) {
       .hero,
+      .theory,
       .guide,
       .simulations,
       .quiz-head {
@@ -448,6 +551,55 @@
   </header>
 
   <main>
+    <section class="theory" aria-label="Teoría y puntos clave">
+      <article class="theory-panel">
+        <h2>Teoría esencial antes del parcial 📚</h2>
+        <ul class="concept-list">
+          <li>
+            <strong>Razones trigonométricas en triángulos rectángulos</strong>
+            <span>sen(θ)=opuesto/hipotenusa, cos(θ)=adyacente/hipotenusa y tan(θ)=opuesto/adyacente. Primero identifica el ángulo; después nombras los lados.</span>
+          </li>
+          <li>
+            <strong>Funciones inversas trigonométricas</strong>
+            <span>arcsen y arccos devuelven valores principales. No basta encontrar un ángulo que sirva: hay que respetar el rango de la función inversa.</span>
+          </li>
+          <li>
+            <strong>Cuadrantes y signos</strong>
+            <span>En I todo es positivo; en II solo seno; en III tangente y cotangente; en IV coseno. Muchos errores del parcial nacen de olvidar este mapa.</span>
+          </li>
+          <li>
+            <strong>Ecuaciones trigonométricas</strong>
+            <span>Factoriza con cuidado. Si aparece un producto igual a cero, revisa todos los factores; dividir por una expresión trigonométrica puede borrar soluciones.</span>
+          </li>
+          <li>
+            <strong>Gráficas sinusoidales</strong>
+            <span>En a sen(bx-c), la amplitud es |a|, el período es 2π/|b| y el desfase se lee mejor al factorizar: b(x-h).</span>
+          </li>
+        </ul>
+      </article>
+      <article class="tips-panel">
+        <h2>Puntos clave para no perder puntos 🧩</h2>
+        <ul class="tips-list">
+          <li>
+            <strong>Haz una mini-verificación</strong>
+            <span>Si tu respuesta es positiva pero el ángulo está en un cuadrante donde esa razón debe ser negativa, detente y corrige.</span>
+          </li>
+          <li>
+            <strong>Trabaja con valores exactos</strong>
+            <span>Evita decimales cuando hay π, √2, √3 o √17. El parcial busca razonamiento exacto, no aproximaciones.</span>
+          </li>
+          <li>
+            <strong>Lee el intervalo</strong>
+            <span>[0,2π) incluye 0 y excluye 2π. Las funciones inversas también tienen intervalos propios.</span>
+          </li>
+          <li>
+            <strong>Gestiona la hora</strong>
+            <span>Cada nivel tiene 60 minutos. Si una pregunta te bloquea, marca una opción razonada, avanza y vuelve antes de validar.</span>
+          </li>
+        </ul>
+      </article>
+    </section>
+
     <section class="guide" aria-label="Consejos para resolver">
       <article>
         <h3>1. Dibuja antes de calcular 🎯</h3>
@@ -492,7 +644,13 @@
           <h2 id="levelTitle">Nivel básico</h2>
           <p id="levelDescription">10 preguntas para afianzar ángulos especiales, razones trigonométricas y signos.</p>
         </div>
-        <div class="score-box" id="scoreBox">Sin validar</div>
+        <div class="status-stack">
+          <div class="timer-box" id="timerBox">
+            <span class="timer-label">Tiempo restante</span>
+            <span class="timer-value" id="timerValue">60:00</span>
+          </div>
+          <div class="score-box" id="scoreBox">Sin validar</div>
+        </div>
       </div>
 
       <div class="questions" id="questions"></div>
@@ -713,12 +871,15 @@
       }
     };
 
+    const LEVEL_DURATION_SECONDS = 60 * 60;
     let currentLevel = "basico";
-    let validated = false;
-    let processVisible = false;
+    let timerId = null;
+    const levelStates = {};
 
     const questionsEl = document.getElementById("questions");
     const scoreBox = document.getElementById("scoreBox");
+    const timerBox = document.getElementById("timerBox");
+    const timerValue = document.getElementById("timerValue");
     const feedback = document.getElementById("feedback");
     const validateBtn = document.getElementById("validateBtn");
     const showProcessBtn = document.getElementById("showProcessBtn");
@@ -726,17 +887,87 @@
     const levelTitle = document.getElementById("levelTitle");
     const levelDescription = document.getElementById("levelDescription");
 
+    function makeState(level) {
+      return {
+        remaining: LEVEL_DURATION_SECONDS,
+        answers: quizzes[level].questions.map(() => null),
+        validated: false,
+        processVisible: false,
+        timedOut: false,
+        score: null
+      };
+    }
+
+    function getState(level = currentLevel) {
+      if (!levelStates[level]) levelStates[level] = makeState(level);
+      return levelStates[level];
+    }
+
+    function formatTime(seconds) {
+      const safeSeconds = Math.max(0, seconds);
+      const minutes = Math.floor(safeSeconds / 60);
+      const secs = safeSeconds % 60;
+      return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    }
+
+    function updateTimerDisplay() {
+      const state = getState();
+      timerValue.textContent = formatTime(state.remaining);
+      timerBox.classList.toggle("warning", state.remaining <= 5 * 60 && !state.validated);
+    }
+
+    function stopTimer() {
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+    }
+
+    function startTimer() {
+      stopTimer();
+      updateTimerDisplay();
+      const state = getState();
+      if (state.validated) return;
+
+      timerId = setInterval(() => {
+        const activeState = getState();
+        if (activeState.validated) {
+          stopTimer();
+          updateTimerDisplay();
+          return;
+        }
+
+        activeState.remaining -= 1;
+        updateTimerDisplay();
+
+        if (activeState.remaining <= 0) {
+          activeState.remaining = 0;
+          activeState.timedOut = true;
+          updateTimerDisplay();
+          validateQuiz({ force: true, reason: "timeout" });
+        }
+      }, 1000);
+    }
+
+    function saveCurrentAnswers() {
+      const state = getState();
+      state.answers = getAnswers();
+    }
+
     function renderQuiz() {
       const quiz = quizzes[currentLevel];
-      validated = false;
-      processVisible = false;
+      const state = getState();
       levelTitle.textContent = quiz.title;
       levelDescription.textContent = quiz.description;
-      scoreBox.textContent = "Sin validar";
-      feedback.textContent = "Responde las 10 preguntas del nivel activo.";
-      showProcessBtn.disabled = true;
-      showProcessBtn.textContent = "Ver proceso";
-      validateBtn.disabled = false;
+      scoreBox.textContent = state.validated ? `${state.score}/10 correctas` : "Sin validar";
+      feedback.textContent = state.validated
+        ? state.timedOut
+          ? "El tiempo terminó. Se calificó con las respuestas que alcanzaste a marcar."
+          : "Nivel validado. Puedes revisar cada proceso o volver a intentarlo."
+        : "Responde las 10 preguntas del nivel activo antes de validar. El reloj de este nivel ya está corriendo.";
+      showProcessBtn.disabled = !state.validated;
+      showProcessBtn.textContent = state.processVisible ? "Ocultar proceso" : "Ver proceso";
+      validateBtn.disabled = state.validated;
 
       questionsEl.innerHTML = quiz.questions.map((item, index) => `
         <article class="question-card" data-index="${index}">
@@ -746,17 +977,21 @@
           </div>
           <div class="options">
             ${item.options.map((option, optionIndex) => `
-              <label class="option">
-                <input type="radio" name="${currentLevel}-${index}" value="${optionIndex}">
+              <label class="option ${state.validated ? "locked" : ""}">
+                <input type="radio" name="${currentLevel}-${index}" value="${optionIndex}" ${state.answers[index] === optionIndex ? "checked" : ""} ${state.validated ? "disabled" : ""}>
                 <span>${String.fromCharCode(65 + optionIndex)}. ${option}</span>
               </label>
             `).join("")}
           </div>
-          <div class="process" id="process-${index}">
+          <div class="process ${state.processVisible ? "visible" : ""}" id="process-${index}">
             <strong>Proceso explicado:</strong> ${item.process}
           </div>
         </article>
       `).join("");
+
+      if (state.validated) markAnswers();
+      updateTimerDisplay();
+      startTimer();
     }
 
     function getAnswers() {
@@ -766,56 +1001,83 @@
       });
     }
 
-    function validateQuiz() {
+    function calculateScore(answers) {
+      const quiz = quizzes[currentLevel];
+      return answers.reduce((score, answer, index) => {
+        return score + (answer === quiz.questions[index].answer ? 1 : 0);
+      }, 0);
+    }
+
+    function markAnswers() {
+      const quiz = quizzes[currentLevel];
+      const state = getState();
+      document.querySelectorAll(".question-card").forEach((card, index) => {
+        card.querySelectorAll(".option").forEach((label, optionIndex) => {
+          label.classList.add("locked");
+          label.classList.toggle("correct", optionIndex === quiz.questions[index].answer);
+          label.classList.toggle("wrong", optionIndex === state.answers[index] && optionIndex !== quiz.questions[index].answer);
+        });
+        card.querySelectorAll("input").forEach(input => {
+          input.disabled = true;
+        });
+      });
+    }
+
+    function validateQuiz({ force = false, reason = "manual" } = {}) {
+      const state = getState();
       const answers = getAnswers();
+      state.answers = answers;
       const missing = answers.filter(answer => answer === null).length;
-      if (missing > 0) {
+      if (missing > 0 && !force) {
         feedback.innerHTML = `<span class="complete-note">Te faltan ${missing} pregunta(s). Completa el nivel para activar la validación.</span>`;
         return;
       }
 
-      const quiz = quizzes[currentLevel];
-      let score = 0;
-      answers.forEach((answer, index) => {
-        if (answer === quiz.questions[index].answer) score++;
-      });
-
-      validated = true;
+      const score = calculateScore(answers);
+      state.validated = true;
+      state.timedOut = reason === "timeout";
+      state.score = score;
+      stopTimer();
       scoreBox.textContent = `${score}/10 correctas`;
       showProcessBtn.disabled = false;
       validateBtn.disabled = true;
 
-      document.querySelectorAll(".question-card").forEach((card, index) => {
-        card.querySelectorAll(".option").forEach((label, optionIndex) => {
-          label.classList.toggle("correct", optionIndex === quiz.questions[index].answer);
-          label.classList.toggle("wrong", optionIndex === answers[index] && optionIndex !== quiz.questions[index].answer);
-        });
-      });
+      markAnswers();
 
-      const message = score >= 8
+      const baseMessage = score >= 8
         ? "Muy buen dominio. Revisa los procesos para fortalecer precisión y velocidad."
         : score >= 5
           ? "Hay base suficiente. Mira los procesos y ubica si los errores fueron de signo, cuadrante o álgebra."
           : "Este resultado no define tu capacidad. Úsalo como mapa: empieza por cuadrantes, razones y fórmulas clave.";
-      feedback.textContent = message;
+      feedback.textContent = reason === "timeout"
+        ? `Se acabó la hora del nivel. Se calificaron ${10 - missing} respuesta(s) marcadas. ${baseMessage}`
+        : baseMessage;
     }
 
     function toggleProcess() {
-      if (!validated) return;
-      processVisible = !processVisible;
+      const state = getState();
+      if (!state.validated) return;
+      state.processVisible = !state.processVisible;
       document.querySelectorAll(".process").forEach(process => {
-        process.classList.toggle("visible", processVisible);
+        process.classList.toggle("visible", state.processVisible);
       });
-      showProcessBtn.textContent = processVisible ? "Ocultar proceso" : "Ver proceso";
+      showProcessBtn.textContent = state.processVisible ? "Ocultar proceso" : "Ver proceso";
     }
 
     function retryQuiz() {
+      levelStates[currentLevel] = makeState(currentLevel);
       renderQuiz();
       window.scrollTo({ top: document.querySelector(".quiz-shell").offsetTop - 12, behavior: "smooth" });
     }
 
+    questionsEl.addEventListener("change", event => {
+      if (!event.target.matches("input[type='radio']")) return;
+      saveCurrentAnswers();
+    });
+
     document.querySelectorAll(".tab").forEach(tab => {
       tab.addEventListener("click", () => {
+        saveCurrentAnswers();
         document.querySelectorAll(".tab").forEach(item => item.classList.remove("active"));
         tab.classList.add("active");
         currentLevel = tab.dataset.level;
