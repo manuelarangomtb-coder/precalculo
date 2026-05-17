@@ -315,6 +315,13 @@
       min-width: 220px;
     }
 
+    .timer-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: stretch;
+    }
+
     .timer-box {
       padding: 12px;
       border: 1px solid rgba(180, 83, 9, .25);
@@ -459,6 +466,10 @@
       cursor: pointer;
     }
 
+    .timer-row button.primary {
+      min-width: 150px;
+    }
+
     button.primary {
       background: var(--blue);
       color: #fff;
@@ -509,6 +520,10 @@
 
       .score-box {
         min-width: 0;
+      }
+
+      .timer-row {
+        grid-template-columns: 1fr;
       }
 
       .options {
@@ -645,9 +660,12 @@
           <p id="levelDescription">10 preguntas para afianzar ángulos especiales, razones trigonométricas y signos.</p>
         </div>
         <div class="status-stack">
-          <div class="timer-box" id="timerBox">
-            <span class="timer-label">Tiempo restante</span>
-            <span class="timer-value" id="timerValue">60:00</span>
+          <div class="timer-row">
+            <div class="timer-box" id="timerBox">
+              <span class="timer-label">Tiempo restante</span>
+              <span class="timer-value" id="timerValue">60:00</span>
+            </div>
+            <button class="primary" id="startBtn">Iniciar parcial</button>
           </div>
           <div class="score-box" id="scoreBox">Sin validar</div>
         </div>
@@ -656,7 +674,6 @@
       <div class="questions" id="questions"></div>
 
       <div class="actions">
-        <button class="primary" id="startBtn">Iniciar parcial</button>
         <button class="primary" id="validateBtn">Validar</button>
         <button class="secondary" id="showProcessBtn" disabled>Ver proceso</button>
         <button class="ghost" id="retryBtn">Volverlo a hacer</button>
