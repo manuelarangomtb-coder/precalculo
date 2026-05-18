@@ -1152,204 +1152,354 @@
 
   <script>
     const quizzes = {
-      basico: {
-        title: "Nivel basico",
-        description: "Preguntas directas para asegurar definiciones, signos y valores especiales.",
-        questions: [
-          {
-            q: "En un triangulo rectangulo, θ esta junto a un cateto de longitud 8 y la hipotenusa mide 10. ¿Cual es sen(θ)?",
-            options: ["3/5", "4/5", "5/4", "8/10"],
-            answer: 0,
-            process: "Si θ esta junto al cateto 8, ese cateto es adyacente. El cateto opuesto vale √(10²-8²)=6. Entonces sen(θ)=opuesto/hipotenusa=6/10=3/5. El error comun es tomar el adyacente como si fuera opuesto."
+          basico: {
+                title: "Nivel basico",
+                description: "Preguntas directas para asegurar definiciones, signos y valores especiales.",
+                questions: [
+                      {
+                            q: "En un triangulo rectangulo, θ esta junto a un cateto de longitud 8 y la hipotenusa mide 10. ¿Cual es sen(θ)?",
+                            options: [
+                                  "4/5",
+                                  "3/5",
+                                  "5/4",
+                                  "8/10"
+                            ],
+                            answer: 1,
+                            process: "Si θ esta junto al cateto 8, ese cateto es adyacente. El cateto opuesto vale √(10²-8²)=6. Entonces sen(θ)=opuesto/hipotenusa=6/10=3/5. El error comun es tomar el adyacente como si fuera opuesto."
+                      },
+                      {
+                            q: "¿En que cuadrante sen(θ) es positivo y cos(θ) es negativo?",
+                            options: [
+                                  "I",
+                                  "III",
+                                  "IV",
+                                  "II"
+                            ],
+                            answer: 3,
+                            process: "Seno corresponde a la coordenada y y coseno a la coordenada x. y positiva y x negativa ubican el angulo en el cuadrante II. Recordar esto evita depender solo de memoria."
+                      },
+                      {
+                            q: "¿Cual es el valor exacto de cos(2π/3)?",
+                            options: [
+                                  "-1/2",
+                                  "1/2",
+                                  "-√3/2",
+                                  "√3/2"
+                            ],
+                            answer: 0,
+                            process: "2π/3 esta en el cuadrante II y su angulo de referencia es π/3. Como cos(π/3)=1/2 y el coseno es negativo en II, cos(2π/3)=-1/2."
+                      },
+                      {
+                            q: "¿Cual es el valor principal de arcsen(1/2)?",
+                            options: [
+                                  "5π/6",
+                                  "π/3",
+                                  "π/6",
+                                  "11π/6"
+                            ],
+                            answer: 2,
+                            process: "arcsen devuelve valores en [-π/2,π/2]. Aunque 5π/6 tambien tiene seno 1/2, no esta en el rango principal. Por eso arcsen(1/2)=π/6."
+                      },
+                      {
+                            q: "Si tan(θ)=√3 y θ esta en [0,2π), ¿cual opcion contiene una solucion?",
+                            options: [
+                                  "2π/3",
+                                  "π/3",
+                                  "π/6",
+                                  "3π/2"
+                            ],
+                            answer: 1,
+                            process: "tan(π/3)=√3. Tambien habria otra solucion en 4π/3, pero entre las opciones dadas la correcta es π/3. El signo positivo de tangente aparece en I y III."
+                      },
+                      {
+                            q: "Para h(x)=4sen(x), ¿cual es la amplitud?",
+                            options: [
+                                  "4",
+                                  "2π",
+                                  "1/4",
+                                  "π"
+                            ],
+                            answer: 0,
+                            process: "La amplitud es el valor absoluto del coeficiente que multiplica a la funcion trigonometrica. En h(x)=4sen(x), la amplitud es |4|=4."
+                      },
+                      {
+                            q: "¿Cual identidad permite cambiar 1-cos²(θ) por sen²(θ)?",
+                            options: [
+                                  "tan(θ)=sen(θ)/cos(θ)",
+                                  "sen(2θ)=2sen(θ)cos(θ)",
+                                  "cos(a+b)=cosa cosb - sena senb",
+                                  "sen²(θ)+cos²(θ)=1"
+                            ],
+                            answer: 3,
+                            process: "De sen²(θ)+cos²(θ)=1 se obtiene sen²(θ)=1-cos²(θ). Esta identidad es la herramienta basica para transformar expresiones cuadraticas."
+                      },
+                      {
+                            q: "Si un punto terminal es (0,-5), ¿cual es sen(θ)?",
+                            options: [
+                                  "0",
+                                  "1",
+                                  "-1",
+                                  "-5"
+                            ],
+                            answer: 2,
+                            process: "La distancia al origen es r=5. El seno es y/r=-5/5=-1. No es -5 porque seno en el circulo unitario se normaliza dividiendo por r."
+                      },
+                      {
+                            q: "Resuelve en [0,2π): sen(θ)=0.",
+                            options: [
+                                  "π/2 y 3π/2",
+                                  "π solamente",
+                                  "0 y 2π",
+                                  "0 y π"
+                            ],
+                            answer: 3,
+                            process: "El seno es la coordenada y. En [0,2π), y=0 ocurre en 0 y π. 2π no se incluye porque el intervalo es abierto al final."
+                      },
+                      {
+                            q: "Si cot(θ)=1/√3 y θ esta en el primer cuadrante, ¿cual es tan(θ)?",
+                            options: [
+                                  "1/√3",
+                                  "√3",
+                                  "-√3",
+                                  "3"
+                            ],
+                            answer: 1,
+                            process: "cotangente es el reciproco de tangente. Si cot(θ)=1/√3, entonces tan(θ)=√3. En el primer cuadrante el signo es positivo."
+                      }
+                ]
           },
-          {
-            q: "¿En que cuadrante sen(θ) es positivo y cos(θ) es negativo?",
-            options: ["II", "I", "III", "IV"],
-            answer: 0,
-            process: "Seno corresponde a la coordenada y y coseno a la coordenada x. y positiva y x negativa ubican el angulo en el cuadrante II. Recordar esto evita depender solo de memoria."
+          intermedio: {
+                title: "Nivel intermedio",
+                description: "Ejercicios de dos o tres pasos con cuadrantes, radicales, ecuaciones y graficas.",
+                questions: [
+                      {
+                            q: "Si cos(θ)=-3/5 y θ esta en el cuadrante II, ¿cual es sen(θ)?",
+                            options: [
+                                  "-4/5",
+                                  "3/5",
+                                  "4/5",
+                                  "-3/5"
+                            ],
+                            answer: 2,
+                            process: "Usa sen²θ+cos²θ=1. Entonces sen²θ=1-9/25=16/25, asi que senθ=±4/5. En cuadrante II el seno es positivo, por eso senθ=4/5."
+                      },
+                      {
+                            q: "Resuelve en [0,2π): 2cos(θ)-1=0.",
+                            options: [
+                                  "π/3 y 5π/3",
+                                  "π/6 y 11π/6",
+                                  "2π/3 y 4π/3",
+                                  "π/3 solamente"
+                            ],
+                            answer: 0,
+                            process: "La ecuacion da cosθ=1/2. En [0,2π), el coseno es positivo en I y IV con referencia π/3: θ=π/3 y 5π/3."
+                      },
+                      {
+                            q: "Un triangulo rectangulo tiene hipotenusa 13 y un cateto 5. Si θ esta opuesto al cateto 5, ¿cual es tan(θ)?",
+                            options: [
+                                  "12/5",
+                                  "5/13",
+                                  "12/13",
+                                  "5/12"
+                            ],
+                            answer: 3,
+                            process: "El otro cateto es √(13²-5²)=12. Como θ esta opuesto al cateto 5, tanθ=opuesto/adyacente=5/12. El error comun es usar la hipotenusa en tangente."
+                      },
+                      {
+                            q: "Para f(x)=3sen(2x-π), ¿cual es el desfase horizontal?",
+                            options: [
+                                  "π a la derecha",
+                                  "π/2 a la derecha",
+                                  "π/2 a la izquierda",
+                                  "π/4 a la derecha"
+                            ],
+                            answer: 1,
+                            process: "Factoriza: 2x-π=2(x-π/2). Entonces el desfase es π/2 hacia la derecha. Si no se factoriza el 2, es facil responder π por error."
+                      },
+                      {
+                            q: "Para f(x)=3sen(2x-π), ¿cual es el periodo?",
+                            options: [
+                                  "2π",
+                                  "4π",
+                                  "π",
+                                  "π/2"
+                            ],
+                            answer: 2,
+                            process: "El coeficiente de x dentro del seno es b=2. El periodo es 2π/|b|=2π/2=π."
+                      },
+                      {
+                            q: "Si un punto terminal de θ es (-2,√5), ¿cual es tan(θ)?",
+                            options: [
+                                  "√5/2",
+                                  "-2/√5",
+                                  "2/√5",
+                                  "-√5/2"
+                            ],
+                            answer: 3,
+                            process: "Tangente es y/x. Aqui y=√5 y x=-2, asi que tanθ=√5/(-2)=-√5/2. El punto esta en cuadrante II, donde tangente es negativa."
+                      },
+                      {
+                            q: "Resuelve en [0,2π): 2sen(θ)cos(θ)=0.",
+                            options: [
+                                  "0, π/2, π, 3π/2",
+                                  "π/2 y 3π/2",
+                                  "0 y π",
+                                  "π/4 y 5π/4"
+                            ],
+                            answer: 0,
+                            process: "Un producto es cero si alguno de sus factores es cero. senθ=0 da 0 y π; cosθ=0 da π/2 y 3π/2. No se debe dividir por sen o cos porque se perderian casos."
+                      },
+                      {
+                            q: "¿Cual es el valor principal de arccos(-√2/2)?",
+                            options: [
+                                  "5π/4",
+                                  "3π/4",
+                                  "-3π/4",
+                                  "π/4"
+                            ],
+                            answer: 1,
+                            process: "arccos devuelve valores en [0,π]. El coseno -√2/2 en ese rango ocurre en 3π/4. 5π/4 tiene el mismo coseno, pero esta fuera del rango de arccos."
+                      },
+                      {
+                            q: "Simplifica 4tan(5π/4)-2sen(π/6).",
+                            options: [
+                                  "5",
+                                  "-3",
+                                  "4√3-1",
+                                  "3"
+                            ],
+                            answer: 3,
+                            process: "tan(5π/4)=1 porque esta en cuadrante III con referencia π/4. sen(π/6)=1/2. Entonces 4(1)-2(1/2)=4-1=3."
+                      },
+                      {
+                            q: "Si sen(θ)=2/3 y θ esta en cuadrante II, ¿cual es cos(θ)?",
+                            options: [
+                                  "√5/3",
+                                  "-2/3",
+                                  "-√5/3",
+                                  "√7/3"
+                            ],
+                            answer: 2,
+                            process: "cos²θ=1-sen²θ=1-4/9=5/9, asi que cosθ=±√5/3. En cuadrante II el coseno es negativo: cosθ=-√5/3."
+                      }
+                ]
           },
-          {
-            q: "¿Cual es el valor exacto de cos(2π/3)?",
-            options: ["-1/2", "1/2", "-√3/2", "√3/2"],
-            answer: 0,
-            process: "2π/3 esta en el cuadrante II y su angulo de referencia es π/3. Como cos(π/3)=1/2 y el coseno es negativo en II, cos(2π/3)=-1/2."
-          },
-          {
-            q: "¿Cual es el valor principal de arcsen(1/2)?",
-            options: ["π/6", "5π/6", "π/3", "11π/6"],
-            answer: 0,
-            process: "arcsen devuelve valores en [-π/2,π/2]. Aunque 5π/6 tambien tiene seno 1/2, no esta en el rango principal. Por eso arcsen(1/2)=π/6."
-          },
-          {
-            q: "Si tan(θ)=√3 y θ esta en [0,2π), ¿cual opcion contiene una solucion?",
-            options: ["π/3", "2π/3", "π/6", "3π/2"],
-            answer: 0,
-            process: "tan(π/3)=√3. Tambien habria otra solucion en 4π/3, pero entre las opciones dadas la correcta es π/3. El signo positivo de tangente aparece en I y III."
-          },
-          {
-            q: "Para h(x)=4sen(x), ¿cual es la amplitud?",
-            options: ["4", "2π", "1/4", "π"],
-            answer: 0,
-            process: "La amplitud es el valor absoluto del coeficiente que multiplica a la funcion trigonometrica. En h(x)=4sen(x), la amplitud es |4|=4."
-          },
-          {
-            q: "¿Cual identidad permite cambiar 1-cos²(θ) por sen²(θ)?",
-            options: ["sen²(θ)+cos²(θ)=1", "tan(θ)=sen(θ)/cos(θ)", "sen(2θ)=2sen(θ)cos(θ)", "cos(a+b)=cosa cosb - sena senb"],
-            answer: 0,
-            process: "De sen²(θ)+cos²(θ)=1 se obtiene sen²(θ)=1-cos²(θ). Esta identidad es la herramienta basica para transformar expresiones cuadraticas."
-          },
-          {
-            q: "Si un punto terminal es (0,-5), ¿cual es sen(θ)?",
-            options: ["-1", "0", "1", "-5"],
-            answer: 0,
-            process: "La distancia al origen es r=5. El seno es y/r=-5/5=-1. No es -5 porque seno en el circulo unitario se normaliza dividiendo por r."
-          },
-          {
-            q: "Resuelve en [0,2π): sen(θ)=0.",
-            options: ["0 y π", "π/2 y 3π/2", "π solamente", "0 y 2π"],
-            answer: 0,
-            process: "El seno es la coordenada y. En [0,2π), y=0 ocurre en 0 y π. 2π no se incluye porque el intervalo es abierto al final."
-          },
-          {
-            q: "Si cot(θ)=1/√3 y θ esta en el primer cuadrante, ¿cual es tan(θ)?",
-            options: ["√3", "1/√3", "-√3", "3"],
-            answer: 0,
-            process: "cotangente es el reciproco de tangente. Si cot(θ)=1/√3, entonces tan(θ)=√3. En el primer cuadrante el signo es positivo."
+          avanzado: {
+                title: "Nivel avanzado",
+                description: "Problemas con razonamiento completo, distractores cercanos y control fino de errores.",
+                questions: [
+                      {
+                            q: "Resuelve en [0,2π): cos(θ)(2sen(θ)+1)=0.",
+                            options: [
+                                  "7π/6 y 11π/6",
+                                  "π/2 y 3π/2",
+                                  "π/6, 5π/6, π/2, 3π/2",
+                                  "π/2, 3π/2, 7π/6, 11π/6"
+                            ],
+                            answer: 3,
+                            process: "Hay dos factores. cosθ=0 da π/2 y 3π/2. 2senθ+1=0 da senθ=-1/2, con soluciones 7π/6 y 11π/6. Resolver ambos factores evita perder soluciones."
+                      },
+                      {
+                            q: "Si θ esta en cuadrante III y tan(θ)=3/4, ¿cual es sen(2θ)?",
+                            options: [
+                                  "-24/25",
+                                  "24/25",
+                                  "7/25",
+                                  "-7/25"
+                            ],
+                            answer: 1,
+                            process: "En cuadrante III, senθ y cosθ son negativos. Con triangulo 3-4-5: senθ=-3/5 y cosθ=-4/5. Entonces sen(2θ)=2(-3/5)(-4/5)=24/25."
+                      },
+                      {
+                            q: "¿Cual es tan(arccos(-5/13))?",
+                            options: [
+                                  "12/5",
+                                  "-5/12",
+                                  "-12/5",
+                                  "5/12"
+                            ],
+                            answer: 2,
+                            process: "Si α=arccos(-5/13), entonces α esta en [0,π] y su coseno es negativo, por tanto α cae en cuadrante II. El cateto opuesto es 12 y el adyacente -5, asi que tanα=-12/5."
+                      },
+                      {
+                            q: "Para y=-2cos(3(x+π/6))+4, ¿cual afirmacion es correcta?",
+                            options: [
+                                  "Amplitud 2, periodo 2π/3, eje medio y=4, desfase π/6 a la izquierda",
+                                  "Amplitud -2, periodo 3, eje medio y=4, desfase π/6 a la derecha",
+                                  "Amplitud 2, periodo 3π, eje medio y=-4, desfase π/6 a la izquierda",
+                                  "Amplitud 4, periodo 2π/3, eje medio y=2, desfase π/6 a la derecha"
+                            ],
+                            answer: 0,
+                            process: "La amplitud es |-2|=2. b=3, entonces periodo=2π/3. El +4 indica eje medio y=4. x+π/6 equivale a x-(-π/6), por eso el desplazamiento es π/6 a la izquierda."
+                      },
+                      {
+                            q: "Demostrar sen(θ-π/2)=-cos(θ) depende principalmente de:",
+                            options: [
+                                  "La identidad pitagorica",
+                                  "La formula de angulo doble",
+                                  "La definicion de cotangente",
+                                  "La formula de diferencia de seno"
+                            ],
+                            answer: 3,
+                            process: "sen(a-b)=sena cosb - cosa senb. Con b=π/2: sen(θ-π/2)=senθ·0 - cosθ·1=-cosθ. La clave es elegir la identidad adecuada."
+                      },
+                      {
+                            q: "Dos triangulos rectangulos comparten altura h. Desde dos puntos sobre la misma recta horizontal, los angulos de elevacion al mismo punto son 30° y 60°. Si la distancia entre los puntos es 8, ¿cual es h?",
+                            options: [
+                                  "8√3",
+                                  "4/√3",
+                                  "4√3",
+                                  "12"
+                            ],
+                            answer: 2,
+                            process: "Sea x la distancia horizontal desde el punto cercano al pie de la altura. tan60°=h/x, entonces h=√3x. Desde el punto lejano la distancia es x+8 y tan30°=h/(x+8)=1/√3. Asi h=(x+8)/√3. Igualando: √3x=(x+8)/√3, entonces 3x=x+8, x=4 y h=4√3."
+                      },
+                      {
+                            q: "Si arcsen(u)=-π/6 y arccos(v)=2π/3, ¿cual es u+v?",
+                            options: [
+                                  "0",
+                                  "-1",
+                                  "1/2",
+                                  "-√3/2"
+                            ],
+                            answer: 1,
+                            process: "arcsen(u)=-π/6 implica u=sen(-π/6)=-1/2. arccos(v)=2π/3 implica v=cos(2π/3)=-1/2. Entonces u+v=-1."
+                      },
+                      {
+                            q: "Resuelve en [0,2π): sen²(θ)=3/4.",
+                            options: [
+                                  "π/3, 2π/3, 4π/3, 5π/3",
+                                  "π/3 y 2π/3",
+                                  "4π/3 y 5π/3",
+                                  "π/6, 5π/6, 7π/6, 11π/6"
+                            ],
+                            answer: 0,
+                            process: "sen²θ=3/4 significa senθ=±√3/2. El seno toma esos valores con referencia π/3 en los cuatro cuadrantes: π/3, 2π/3, 4π/3 y 5π/3."
+                      },
+                      {
+                            q: "Si un punto terminal de θ es (-1,-2√2), ¿cual es cos(2θ)?",
+                            options: [
+                                  "7/9",
+                                  "-1/9",
+                                  "-7/9",
+                                  "1/9"
+                            ],
+                            answer: 2,
+                            process: "r=√(1+8)=3. Entonces cosθ=-1/3 y senθ=-2√2/3. Usa cos(2θ)=cos²θ-sen²θ=1/9-8/9=-7/9."
+                      },
+                      {
+                            q: "¿Que error produce resolver sen(θ)cos(θ)=sen(θ) dividiendo inmediatamente por sen(θ)?",
+                            options: [
+                                  "Se agregan soluciones falsas con cos(θ)=0",
+                                  "Se cambia el intervalo a [-π,π]",
+                                  "Se convierte seno en coseno",
+                                  "Se pierden las soluciones con sen(θ)=0"
+                            ],
+                            answer: 3,
+                            process: "Si divides por senθ, estas suponiendo que senθ no es cero. Pero senθ=0 puede satisfacer la ecuacion original. Primero se factoriza: senθ(cosθ-1)=0 y se revisan ambos factores."
+                      }
+                ]
           }
-        ]
-      },
-      intermedio: {
-        title: "Nivel intermedio",
-        description: "Ejercicios de dos o tres pasos con cuadrantes, radicales, ecuaciones y graficas.",
-        questions: [
-          {
-            q: "Si cos(θ)=-3/5 y θ esta en el cuadrante II, ¿cual es sen(θ)?",
-            options: ["4/5", "-4/5", "3/5", "-3/5"],
-            answer: 0,
-            process: "Usa sen²θ+cos²θ=1. Entonces sen²θ=1-9/25=16/25, asi que senθ=±4/5. En cuadrante II el seno es positivo, por eso senθ=4/5."
-          },
-          {
-            q: "Resuelve en [0,2π): 2cos(θ)-1=0.",
-            options: ["π/3 y 5π/3", "π/6 y 11π/6", "2π/3 y 4π/3", "π/3 solamente"],
-            answer: 0,
-            process: "La ecuacion da cosθ=1/2. En [0,2π), el coseno es positivo en I y IV con referencia π/3: θ=π/3 y 5π/3."
-          },
-          {
-            q: "Un triangulo rectangulo tiene hipotenusa 13 y un cateto 5. Si θ esta opuesto al cateto 5, ¿cual es tan(θ)?",
-            options: ["5/12", "12/5", "5/13", "12/13"],
-            answer: 0,
-            process: "El otro cateto es √(13²-5²)=12. Como θ esta opuesto al cateto 5, tanθ=opuesto/adyacente=5/12. El error comun es usar la hipotenusa en tangente."
-          },
-          {
-            q: "Para f(x)=3sen(2x-π), ¿cual es el desfase horizontal?",
-            options: ["π/2 a la derecha", "π a la derecha", "π/2 a la izquierda", "π/4 a la derecha"],
-            answer: 0,
-            process: "Factoriza: 2x-π=2(x-π/2). Entonces el desfase es π/2 hacia la derecha. Si no se factoriza el 2, es facil responder π por error."
-          },
-          {
-            q: "Para f(x)=3sen(2x-π), ¿cual es el periodo?",
-            options: ["π", "2π", "4π", "π/2"],
-            answer: 0,
-            process: "El coeficiente de x dentro del seno es b=2. El periodo es 2π/|b|=2π/2=π."
-          },
-          {
-            q: "Si un punto terminal de θ es (-2,√5), ¿cual es tan(θ)?",
-            options: ["-√5/2", "√5/2", "-2/√5", "2/√5"],
-            answer: 0,
-            process: "Tangente es y/x. Aqui y=√5 y x=-2, asi que tanθ=√5/(-2)=-√5/2. El punto esta en cuadrante II, donde tangente es negativa."
-          },
-          {
-            q: "Resuelve en [0,2π): 2sen(θ)cos(θ)=0.",
-            options: ["0, π/2, π, 3π/2", "π/2 y 3π/2", "0 y π", "π/4 y 5π/4"],
-            answer: 0,
-            process: "Un producto es cero si alguno de sus factores es cero. senθ=0 da 0 y π; cosθ=0 da π/2 y 3π/2. No se debe dividir por sen o cos porque se perderian casos."
-          },
-          {
-            q: "¿Cual es el valor principal de arccos(-√2/2)?",
-            options: ["3π/4", "5π/4", "-3π/4", "π/4"],
-            answer: 0,
-            process: "arccos devuelve valores en [0,π]. El coseno -√2/2 en ese rango ocurre en 3π/4. 5π/4 tiene el mismo coseno, pero esta fuera del rango de arccos."
-          },
-          {
-            q: "Simplifica 4tan(5π/4)-2sen(π/6).",
-            options: ["3", "5", "-3", "4√3-1"],
-            answer: 0,
-            process: "tan(5π/4)=1 porque esta en cuadrante III con referencia π/4. sen(π/6)=1/2. Entonces 4(1)-2(1/2)=4-1=3."
-          },
-          {
-            q: "Si sen(θ)=2/3 y θ esta en cuadrante II, ¿cual es cos(θ)?",
-            options: ["-√5/3", "√5/3", "-2/3", "√7/3"],
-            answer: 0,
-            process: "cos²θ=1-sen²θ=1-4/9=5/9, asi que cosθ=±√5/3. En cuadrante II el coseno es negativo: cosθ=-√5/3."
-          }
-        ]
-      },
-      avanzado: {
-        title: "Nivel avanzado",
-        description: "Problemas con razonamiento completo, distractores cercanos y control fino de errores.",
-        questions: [
-          {
-            q: "Resuelve en [0,2π): cos(θ)(2sen(θ)+1)=0.",
-            options: ["π/2, 3π/2, 7π/6, 11π/6", "7π/6 y 11π/6", "π/2 y 3π/2", "π/6, 5π/6, π/2, 3π/2"],
-            answer: 0,
-            process: "Hay dos factores. cosθ=0 da π/2 y 3π/2. 2senθ+1=0 da senθ=-1/2, con soluciones 7π/6 y 11π/6. Resolver ambos factores evita perder soluciones."
-          },
-          {
-            q: "Si θ esta en cuadrante III y tan(θ)=3/4, ¿cual es sen(2θ)?",
-            options: ["24/25", "-24/25", "7/25", "-7/25"],
-            answer: 0,
-            process: "En cuadrante III, senθ y cosθ son negativos. Con triangulo 3-4-5: senθ=-3/5 y cosθ=-4/5. Entonces sen(2θ)=2(-3/5)(-4/5)=24/25."
-          },
-          {
-            q: "¿Cual es tan(arccos(-5/13))?",
-            options: ["-12/5", "12/5", "-5/12", "5/12"],
-            answer: 0,
-            process: "Si α=arccos(-5/13), entonces α esta en [0,π] y su coseno es negativo, por tanto α cae en cuadrante II. El cateto opuesto es 12 y el adyacente -5, asi que tanα=-12/5."
-          },
-          {
-            q: "Para y=-2cos(3(x+π/6))+4, ¿cual afirmacion es correcta?",
-            options: ["Amplitud 2, periodo 2π/3, eje medio y=4, desfase π/6 a la izquierda", "Amplitud -2, periodo 3, eje medio y=4, desfase π/6 a la derecha", "Amplitud 2, periodo 3π, eje medio y=-4, desfase π/6 a la izquierda", "Amplitud 4, periodo 2π/3, eje medio y=2, desfase π/6 a la derecha"],
-            answer: 0,
-            process: "La amplitud es |-2|=2. b=3, entonces periodo=2π/3. El +4 indica eje medio y=4. x+π/6 equivale a x-(-π/6), por eso el desplazamiento es π/6 a la izquierda."
-          },
-          {
-            q: "Demostrar sen(θ-π/2)=-cos(θ) depende principalmente de:",
-            options: ["La formula de diferencia de seno", "La identidad pitagorica", "La formula de angulo doble", "La definicion de cotangente"],
-            answer: 0,
-            process: "sen(a-b)=sena cosb - cosa senb. Con b=π/2: sen(θ-π/2)=senθ·0 - cosθ·1=-cosθ. La clave es elegir la identidad adecuada."
-          },
-          {
-            q: "Dos triangulos rectangulos comparten altura h. Desde dos puntos sobre la misma recta horizontal, los angulos de elevacion al mismo punto son 30° y 60°. Si la distancia entre los puntos es 8, ¿cual es h?",
-            options: ["4√3", "8√3", "4/√3", "12"],
-            answer: 0,
-            process: "Sea x la distancia horizontal desde el punto cercano al pie de la altura. tan60°=h/x, entonces h=√3x. Desde el punto lejano la distancia es x+8 y tan30°=h/(x+8)=1/√3. Asi h=(x+8)/√3. Igualando: √3x=(x+8)/√3, entonces 3x=x+8, x=4 y h=4√3."
-          },
-          {
-            q: "Si arcsen(u)=-π/6 y arccos(v)=2π/3, ¿cual es u+v?",
-            options: ["-1", "0", "1/2", "-√3/2"],
-            answer: 0,
-            process: "arcsen(u)=-π/6 implica u=sen(-π/6)=-1/2. arccos(v)=2π/3 implica v=cos(2π/3)=-1/2. Entonces u+v=-1."
-          },
-          {
-            q: "Resuelve en [0,2π): sen²(θ)=3/4.",
-            options: ["π/3, 2π/3, 4π/3, 5π/3", "π/3 y 2π/3", "4π/3 y 5π/3", "π/6, 5π/6, 7π/6, 11π/6"],
-            answer: 0,
-            process: "sen²θ=3/4 significa senθ=±√3/2. El seno toma esos valores con referencia π/3 en los cuatro cuadrantes: π/3, 2π/3, 4π/3 y 5π/3."
-          },
-          {
-            q: "Si un punto terminal de θ es (-1,-2√2), ¿cual es cos(2θ)?",
-            options: ["-7/9", "7/9", "-1/9", "1/9"],
-            answer: 0,
-            process: "r=√(1+8)=3. Entonces cosθ=-1/3 y senθ=-2√2/3. Usa cos(2θ)=cos²θ-sen²θ=1/9-8/9=-7/9."
-          },
-          {
-            q: "¿Que error produce resolver sen(θ)cos(θ)=sen(θ) dividiendo inmediatamente por sen(θ)?",
-            options: ["Se pierden las soluciones con sen(θ)=0", "Se agregan soluciones falsas con cos(θ)=0", "Se cambia el intervalo a [-π,π]", "Se convierte seno en coseno"],
-            answer: 0,
-            process: "Si divides por senθ, estas suponiendo que senθ no es cero. Pero senθ=0 puede satisfacer la ecuacion original. Primero se factoriza: senθ(cosθ-1)=0 y se revisan ambos factores."
-          }
-        ]
-      }
     };
 
     const LEVEL_DURATION_SECONDS = 60 * 60;
