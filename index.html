@@ -2004,6 +2004,21 @@
       }, 460);
     }
 
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function buildWrongFeedback(item, selected) {
+      const chosen = escapeHtml(item.options[selected]);
+      const correctOption = escapeHtml(item.options[item.answer]);
+      return `<strong>No te preocupes.</strong> Elegiste <strong>${chosen}</strong>. Esa puerta no abre porque esa opcion no satisface completamente la condicion del enunciado. La puerta que si cumple es <strong>${correctOption}</strong>. Mira la idea clave: ${item.process} Esto no es un retroceso; es una pista concreta para ajustar tu siguiente intento.`;
+    }
+
     function handleDoorClick(event) {
       const door = event.target.closest(".door");
       if (!door || !gameState.started || gameState.answeredCorrect || gameState.completed) return;
@@ -2027,7 +2042,7 @@
         gameState.life -= 10;
         door.classList.add("wrong");
         gameSpeech.textContent = "Respira. Fallar una puerta no te cierra el camino: te muestra que concepto hay que ajustar.";
-        gameFeedback.innerHTML = `<strong>No te preocupes.</strong> Esta respuesta no abre el portal, pero estas aprendiendo. Revisa signo, cuadrante, rango o formula, y vuelve a intentarlo con calma.`;
+        gameFeedback.innerHTML = buildWrongFeedback(item, selected);
         updateLife();
         if (gameState.life <= 0) {
           gameSpeech.textContent = "Tu energia llego a cero, pero eso no habla de tu capacidad. Reinicia la mision y usa lo que ya descubriste.";
