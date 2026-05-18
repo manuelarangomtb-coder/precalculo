@@ -184,6 +184,44 @@
       margin-top: 12px;
     }
 
+    .formula-live {
+      margin: 12px 0;
+      padding: 14px;
+      border: 1px solid rgba(37, 99, 235, .22);
+      border-radius: 8px;
+      background: linear-gradient(135deg, #eff6ff 0%, #ecfeff 100%);
+      color: #1e3a8a;
+      text-align: center;
+      font-size: clamp(1.05rem, 2.3vw, 1.45rem);
+      font-weight: 950;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, .12);
+    }
+
+    .slider-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .slider-control {
+      display: grid;
+      gap: 6px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .slider-control label {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: .9rem;
+      font-weight: 800;
+    }
+
     input[type="range"] {
       width: 100%;
       accent-color: var(--teal);
@@ -435,6 +473,10 @@
         grid-template-columns: 1fr;
       }
 
+      .slider-grid {
+        grid-template-columns: 1fr;
+      }
+
       .tab {
         border-right: 0;
         border-bottom: 1px solid var(--line);
@@ -524,8 +566,27 @@
         </article>
         <article class="sim-panel">
           <h2>Transformacion sinusoidal</h2>
-          <p>Modelo visual: g(x)=3cos(2(x-π/3))-1. Identifica amplitud, periodo, desplazamiento y eje medio.</p>
+          <p>Mueve los parametros y observa como cambian la formula, la amplitud, el periodo, el desfase y el eje medio.</p>
+          <div class="formula-live" id="waveFormula">y = 3 · sen(2(x − π/3)) − 1</div>
           <canvas id="waveCanvas" width="760" height="420"></canvas>
+          <div class="slider-grid" aria-label="Controles de la funcion sinusoidal">
+            <div class="slider-control">
+              <label for="ampRange">A amplitud <span id="ampValue">3</span></label>
+              <input id="ampRange" type="range" min="-4" max="4" step="0.5" value="3">
+            </div>
+            <div class="slider-control">
+              <label for="freqRange">B frecuencia <span id="freqValue">2</span></label>
+              <input id="freqRange" type="range" min="0.5" max="4" step="0.5" value="2">
+            </div>
+            <div class="slider-control">
+              <label for="phaseRange">C desfase <span id="phaseValue">π/3</span></label>
+              <input id="phaseRange" type="range" min="-6" max="6" step="1" value="2">
+            </div>
+            <div class="slider-control">
+              <label for="verticalRange">D eje medio <span id="verticalValue">-1</span></label>
+              <input id="verticalRange" type="range" min="-4" max="4" step="0.5" value="-1">
+            </div>
+          </div>
         </article>
       </div>
     </section>
@@ -1002,6 +1063,68 @@
     const angleReadout = document.getElementById("angleReadout");
     const circleCanvas = document.getElementById("circleCanvas");
     const waveCanvas = document.getElementById("waveCanvas");
+    const waveFormula = document.getElementById("waveFormula");
+    const ampRange = document.getElementById("ampRange");
+    const freqRange = document.getElementById("freqRange");
+    const phaseRange = document.getElementById("phaseRange");
+    const verticalRange = document.getElementById("verticalRange");
+    const ampValue = document.getElementById("ampValue");
+    const freqValue = document.getElementById("freqValue");
+    const phaseValue = document.getElementById("phaseValue");
+    const verticalValue = document.getElementById("verticalValue");
+
+    const exactTrigValues = {
+      0: { sin: "0", cos: "1", tan: "0" },
+      30: { sin: "1/2", cos: "√3/2", tan: "√3/3" },
+      45: { sin: "√2/2", cos: "√2/2", tan: "1" },
+      60: { sin: "√3/2", cos: "1/2", tan: "√3" },
+      90: { sin: "1", cos: "0", tan: "indef." },
+      120: { sin: "√3/2", cos: "-1/2", tan: "-√3" },
+      135: { sin: "√2/2", cos: "-√2/2", tan: "-1" },
+      150: { sin: "1/2", cos: "-√3/2", tan: "-√3/3" },
+      180: { sin: "0", cos: "-1", tan: "0" },
+      210: { sin: "-1/2", cos: "-√3/2", tan: "√3/3" },
+      225: { sin: "-√2/2", cos: "-√2/2", tan: "1" },
+      240: { sin: "-√3/2", cos: "-1/2", tan: "√3" },
+      270: { sin: "-1", cos: "0", tan: "indef." },
+      300: { sin: "-√3/2", cos: "1/2", tan: "-√3" },
+      315: { sin: "-√2/2", cos: "√2/2", tan: "-1" },
+      330: { sin: "-1/2", cos: "√3/2", tan: "-√3/3" },
+      360: { sin: "0", cos: "1", tan: "0" }
+    };
+
+    function formatTrigValue(deg, key, decimalValue) {
+      const exact = exactTrigValues[deg]?.[key];
+      if (exact) return exact;
+      if (key === "tan" && Math.abs(Math.cos(deg * Math.PI / 180)) < .001) return "indef.";
+      return `≈ ${decimalValue.toFixed(3)}`;
+    }
+
+    function formatNumber(value) {
+      return Number.isInteger(value) ? String(value) : value.toFixed(1);
+    }
+
+    function formatPiMultiple(halfPiUnits) {
+      if (halfPiUnits === 0) return "0";
+      const sign = halfPiUnits < 0 ? "-" : "";
+      const n = Math.abs(halfPiUnits);
+      if (n === 1) return `${sign}π/6`;
+      if (n === 2) return `${sign}π/3`;
+      if (n === 3) return `${sign}π/2`;
+      if (n === 4) return `${sign}2π/3`;
+      if (n === 5) return `${sign}5π/6`;
+      if (n === 6) return `${sign}π`;
+      return `${sign}${n}π/6`;
+    }
+
+    function formatFormula(A, B, CUnits, D) {
+      const aText = formatNumber(A);
+      const bText = formatNumber(B);
+      const cText = formatPiMultiple(CUnits);
+      const dText = D === 0 ? "" : D > 0 ? ` + ${formatNumber(D)}` : ` − ${formatNumber(Math.abs(D))}`;
+      const phaseText = CUnits === 0 ? "x" : CUnits > 0 ? `(x − ${cText})` : `(x + ${formatPiMultiple(Math.abs(CUnits))})`;
+      return `y = ${aText} · sen(${bText}${phaseText})${dText}`;
+    }
 
     function drawCircle() {
       const ctx = circleCanvas.getContext("2d");
@@ -1043,9 +1166,9 @@
       ctx.font = "700 22px system-ui";
       ctx.fillText(`θ = ${deg}°`, w * .72, 96);
       ctx.font = "650 18px system-ui";
-      ctx.fillText(`cos θ ≈ ${x.toFixed(3)}`, w * .72, 140);
-      ctx.fillText(`sen θ ≈ ${y.toFixed(3)}`, w * .72, 172);
-      ctx.fillText(`tan θ ≈ ${Math.abs(x) < .001 ? "indef." : (y / x).toFixed(3)}`, w * .72, 204);
+      ctx.fillText(`cos θ = ${formatTrigValue(deg, "cos", x)}`, w * .72, 140);
+      ctx.fillText(`sen θ = ${formatTrigValue(deg, "sin", y)}`, w * .72, 172);
+      ctx.fillText(`tan θ = ${formatTrigValue(deg, "tan", y / x)}`, w * .72, 204);
       ctx.fillStyle = "#607084";
       ctx.font = "15px system-ui";
       ctx.fillText("Comprueba siempre el cuadrante.", w * .72, 248);
@@ -1056,13 +1179,25 @@
       const ctx = waveCanvas.getContext("2d");
       const w = waveCanvas.width;
       const h = waveCanvas.height;
+      const A = Number(ampRange.value);
+      const B = Number(freqRange.value);
+      const CUnits = Number(phaseRange.value);
+      const C = CUnits * Math.PI / 6;
+      const D = Number(verticalRange.value);
       const pad = 48;
       const mid = h / 2;
-      const xMin = -Math.PI;
-      const xMax = 3 * Math.PI;
-      const yScale = 48;
+      const xMin = -2 * Math.PI;
+      const xMax = 2 * Math.PI;
+      const yMaxAbs = Math.max(5, Math.abs(D) + Math.abs(A) + 1);
+      const yScale = (h - 90) / (2 * yMaxAbs);
       const mapX = value => pad + (value - xMin) / (xMax - xMin) * (w - 2 * pad);
       const mapY = value => mid - value * yScale;
+      ampValue.textContent = formatNumber(A);
+      freqValue.textContent = formatNumber(B);
+      phaseValue.textContent = formatPiMultiple(CUnits);
+      verticalValue.textContent = formatNumber(D);
+      waveFormula.textContent = formatFormula(A, B, CUnits, D);
+
       ctx.clearRect(0, 0, w, h);
       ctx.strokeStyle = "#d7e0ea";
       ctx.lineWidth = 1;
@@ -1070,18 +1205,24 @@
         const x = pad + i * (w - 2 * pad) / 12;
         ctx.beginPath(); ctx.moveTo(x, 26); ctx.lineTo(x, h - 30); ctx.stroke();
       }
-      for (let y = -4; y <= 4; y++) {
+      for (let y = Math.ceil(-yMaxAbs); y <= Math.floor(yMaxAbs); y++) {
         ctx.beginPath(); ctx.moveTo(pad, mapY(y)); ctx.lineTo(w - pad, mapY(y)); ctx.stroke();
       }
       ctx.strokeStyle = "#334155";
       ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(pad, mapY(-1)); ctx.lineTo(w - pad, mapY(-1)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(pad, mapY(0)); ctx.lineTo(w - pad, mapY(0)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(mapX(0), 26); ctx.lineTo(mapX(0), h - 30); ctx.stroke();
+      ctx.strokeStyle = "#a855f7";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([8, 7]);
+      ctx.beginPath(); ctx.moveTo(pad, mapY(D)); ctx.lineTo(w - pad, mapY(D)); ctx.stroke();
+      ctx.setLineDash([]);
       ctx.strokeStyle = "#2563eb";
       ctx.lineWidth = 4;
       ctx.beginPath();
       for (let px = 0; px <= w - 2 * pad; px++) {
         const x = xMin + px / (w - 2 * pad) * (xMax - xMin);
-        const y = 3 * Math.cos(2 * (x - Math.PI / 3)) - 1;
+        const y = A * Math.sin(B * (x - C)) + D;
         const sx = mapX(x);
         const sy = mapY(y);
         if (px === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
@@ -1089,13 +1230,16 @@
       ctx.stroke();
       ctx.fillStyle = "#1f2937";
       ctx.font = "800 17px system-ui";
-      ctx.fillText("Amplitud 3", pad, 36);
-      ctx.fillText("Periodo π", pad + 140, 36);
-      ctx.fillText("Desfase π/3 derecha", pad + 260, 36);
-      ctx.fillText("Eje medio y=-1", pad + 470, 36);
+      ctx.fillText(`Amplitud ${formatNumber(Math.abs(A))}`, pad, 36);
+      ctx.fillText(`Periodo ${(2 * Math.PI / Math.abs(B)).toFixed(2)}`, pad + 140, 36);
+      ctx.fillText(`Desfase ${formatPiMultiple(CUnits)}`, pad + 285, 36);
+      ctx.fillText(`Eje medio y=${formatNumber(D)}`, pad + 470, 36);
     }
 
     angleRange.addEventListener("input", drawCircle);
+    [ampRange, freqRange, phaseRange, verticalRange].forEach(control => {
+      control.addEventListener("input", drawWave);
+    });
     window.addEventListener("resize", () => { drawCircle(); drawWave(); });
     renderQuiz();
     drawCircle();
