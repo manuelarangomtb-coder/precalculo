@@ -265,6 +265,33 @@
       box-shadow: inset 0 -4px 0 var(--blue);
     }
 
+    .mode-tabs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 26px 0 14px;
+    }
+
+    .mode-tab {
+      min-height: 52px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .88);
+      color: var(--muted);
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(31, 41, 55, .07);
+    }
+
+    .mode-tab.active {
+      background: linear-gradient(135deg, #1d4ed8 0%, #0f766e 100%);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .mode-panel { display: none; }
+    .mode-panel.active { display: block; }
+
     .quiz-head {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(260px, auto);
@@ -455,6 +482,425 @@
       font-weight: 700;
     }
 
+    .game-shell {
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 20% 18%, rgba(96, 165, 250, .22), transparent 18rem),
+        radial-gradient(circle at 78% 8%, rgba(20, 184, 166, .18), transparent 18rem),
+        linear-gradient(135deg, #0f172a 0%, #111827 48%, #172554 100%);
+      border: 1px solid rgba(148, 163, 184, .28);
+      border-radius: 8px;
+      color: #e5f3ff;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, .24);
+    }
+
+    .game-top {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      padding: 18px 20px;
+      border-bottom: 1px solid rgba(148, 163, 184, .24);
+      background: rgba(15, 23, 42, .72);
+    }
+
+    .game-top h2 {
+      margin: 0 0 4px;
+      font-size: clamp(1.35rem, 2.3vw, 2rem);
+    }
+
+    .game-top p {
+      margin: 0;
+      color: #b6c8df;
+    }
+
+    .game-stats {
+      display: grid;
+      gap: 10px;
+      min-width: 260px;
+    }
+
+    .life-wrap {
+      display: grid;
+      gap: 5px;
+      font-weight: 900;
+    }
+
+    .life-track {
+      height: 18px;
+      border: 1px solid rgba(226, 232, 240, .28);
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(15, 23, 42, .72);
+    }
+
+    .life-fill {
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #bef264);
+      border-radius: inherit;
+      transition: width .35s ease, background .35s ease;
+    }
+
+    .medals {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .medal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 30px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, .16);
+      color: #cbd5e1;
+      font-weight: 900;
+    }
+
+    .medal.earned {
+      background: linear-gradient(135deg, #f59e0b, #fef08a);
+      color: #713f12;
+      box-shadow: 0 0 22px rgba(245, 158, 11, .4);
+    }
+
+    .game-stage {
+      position: relative;
+      min-height: 560px;
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .stars-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      pointer-events: none;
+      opacity: .82;
+    }
+
+    .game-world {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(210px, .72fr) minmax(0, 1.28fr);
+      gap: 18px;
+      align-items: end;
+      min-height: 520px;
+    }
+
+    .avatar-zone {
+      display: grid;
+      align-content: end;
+      gap: 12px;
+      min-height: 470px;
+    }
+
+    .speech {
+      position: relative;
+      padding: 14px;
+      border: 1px solid rgba(125, 211, 252, .42);
+      border-radius: 8px;
+      background: rgba(15, 23, 42, .84);
+      color: #e0f2fe;
+      box-shadow: 0 12px 36px rgba(14, 165, 233, .16);
+    }
+
+    .speech::after {
+      content: "";
+      position: absolute;
+      left: 34px;
+      bottom: -11px;
+      width: 20px;
+      height: 20px;
+      transform: rotate(45deg);
+      border-right: 1px solid rgba(125, 211, 252, .42);
+      border-bottom: 1px solid rgba(125, 211, 252, .42);
+      background: rgba(15, 23, 42, .84);
+    }
+
+    .avatar {
+      position: relative;
+      width: 138px;
+      height: 190px;
+      margin-left: 28px;
+      filter: drop-shadow(0 18px 26px rgba(0, 0, 0, .35));
+      animation: floatHero 2.2s ease-in-out infinite;
+    }
+
+    .helmet {
+      position: absolute;
+      left: 35px;
+      top: 0;
+      width: 70px;
+      height: 70px;
+      border: 4px solid #bfdbfe;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #e0f2fe, #60a5fa 55%, #1e40af 100%);
+    }
+
+    .visor {
+      position: absolute;
+      left: 14px;
+      top: 24px;
+      width: 42px;
+      height: 22px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #0f172a, #164e63);
+      box-shadow: inset 0 0 8px rgba(125, 211, 252, .7);
+    }
+
+    .body-suit {
+      position: absolute;
+      left: 42px;
+      top: 68px;
+      width: 54px;
+      height: 82px;
+      border-radius: 18px 18px 14px 14px;
+      background: linear-gradient(180deg, #38bdf8, #1d4ed8);
+      border: 2px solid #93c5fd;
+    }
+
+    .arm, .leg {
+      position: absolute;
+      background: #60a5fa;
+      border: 2px solid #bfdbfe;
+    }
+
+    .arm.left { left: 18px; top: 78px; width: 32px; height: 14px; border-radius: 999px; transform: rotate(-18deg); }
+    .arm.right { left: 86px; top: 82px; width: 48px; height: 14px; border-radius: 999px; transform: rotate(4deg); }
+    .leg.left { left: 48px; top: 145px; width: 17px; height: 42px; border-radius: 999px; }
+    .leg.right { left: 74px; top: 145px; width: 17px; height: 42px; border-radius: 999px; }
+
+    .blaster {
+      position: absolute;
+      left: 120px;
+      top: 78px;
+      width: 32px;
+      height: 18px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #f8fafc, #38bdf8);
+      box-shadow: 0 0 14px rgba(56, 189, 248, .8);
+    }
+
+    .avatar.shoot .blaster {
+      animation: recoil .22s ease;
+    }
+
+    .laser {
+      position: absolute;
+      left: 170px;
+      bottom: 174px;
+      width: 0;
+      height: 5px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #e0f2fe, #22d3ee, #fef08a);
+      box-shadow: 0 0 20px rgba(34, 211, 238, .95);
+      opacity: 0;
+      z-index: 3;
+    }
+
+    .laser.fire {
+      animation: laserFire .42s ease;
+    }
+
+    .doors-zone {
+      align-self: stretch;
+      display: grid;
+      align-content: end;
+      gap: 16px;
+    }
+
+    .mission-card {
+      padding: 15px;
+      border: 1px solid rgba(125, 211, 252, .32);
+      border-radius: 8px;
+      background: rgba(15, 23, 42, .82);
+      box-shadow: 0 18px 44px rgba(15, 23, 42, .28);
+    }
+
+    .mission-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 9px;
+    }
+
+    .mission-meta span {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, .24);
+      color: #bfdbfe;
+      font-size: .82rem;
+      font-weight: 900;
+    }
+
+    .mission-card h3 {
+      margin: 0;
+      color: #f8fafc;
+      font-size: 1.04rem;
+    }
+
+    .doors-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .door {
+      position: relative;
+      min-height: 142px;
+      padding: 14px;
+      border: 1px solid rgba(125, 211, 252, .4);
+      border-radius: 8px 8px 4px 4px;
+      background:
+        linear-gradient(90deg, rgba(14, 165, 233, .18), transparent 12%, transparent 88%, rgba(14, 165, 233, .18)),
+        linear-gradient(180deg, #172554 0%, #0f172a 100%);
+      color: #e0f2fe;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: inset 0 0 28px rgba(14, 165, 233, .22), 0 18px 34px rgba(0, 0, 0, .24);
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .door::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(186, 230, 253, .24);
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .door::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 10px;
+      bottom: 10px;
+      width: 2px;
+      background: rgba(125, 211, 252, .28);
+      transform: translateX(-50%);
+      transition: opacity .2s ease;
+    }
+
+    .door:hover:not(:disabled) {
+      transform: translateY(-4px);
+      border-color: rgba(34, 211, 238, .9);
+      box-shadow: inset 0 0 34px rgba(14, 165, 233, .3), 0 22px 42px rgba(14, 165, 233, .18);
+    }
+
+    .door:disabled {
+      cursor: not-allowed;
+      opacity: .75;
+    }
+
+    .door-label {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 8px;
+      height: 100%;
+      align-content: center;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .door-letter {
+      color: #67e8f9;
+      font-size: .9rem;
+      text-transform: uppercase;
+    }
+
+    .door.correct {
+      animation: doorOpen .75s ease forwards;
+      border-color: rgba(34, 197, 94, .9);
+    }
+
+    .door.wrong {
+      animation: shakeDoor .35s ease;
+      border-color: rgba(248, 113, 113, .95);
+    }
+
+    .game-feedback {
+      min-height: 92px;
+      padding: 15px;
+      border: 1px solid rgba(148, 163, 184, .28);
+      border-radius: 8px;
+      background: rgba(15, 23, 42, .82);
+      color: #dbeafe;
+      box-shadow: 0 12px 34px rgba(15, 23, 42, .24);
+    }
+
+    .game-feedback strong {
+      color: #67e8f9;
+    }
+
+    .game-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 16px 20px 20px;
+      border-top: 1px solid rgba(148, 163, 184, .24);
+      background: rgba(15, 23, 42, .72);
+    }
+
+    .game-actions button {
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 8px;
+      color: #fff;
+      background: #2563eb;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .game-actions button.secondary-game {
+      background: #0f766e;
+    }
+
+    .game-actions button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    @keyframes floatHero {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes recoil {
+      0% { transform: translateX(0); }
+      45% { transform: translateX(-9px); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes laserFire {
+      0% { opacity: 1; width: 0; }
+      45% { opacity: 1; width: min(58vw, 650px); }
+      100% { opacity: 0; width: min(58vw, 650px); }
+    }
+
+    @keyframes doorOpen {
+      0% { transform: translateY(0) scaleX(1); opacity: 1; }
+      70% { transform: translateY(-10px) scaleX(.72); opacity: .92; }
+      100% { transform: translateY(-18px) scaleX(.18); opacity: .35; }
+    }
+
+    @keyframes shakeDoor {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      50% { transform: translateX(8px); }
+      75% { transform: translateX(-5px); }
+    }
+
     .complete-note { color: var(--amber); }
 
     footer {
@@ -465,12 +911,24 @@
     }
 
     @media (max-width: 860px) {
-      .hero, .grid-2, .grid-3, .quiz-head {
+      .hero, .grid-2, .grid-3, .quiz-head, .game-top, .game-world {
         grid-template-columns: 1fr;
       }
 
-      .tabs, .options, .timer-row {
+      .tabs, .options, .timer-row, .mode-tabs, .doors-grid {
         grid-template-columns: 1fr;
+      }
+
+      .game-stats {
+        min-width: 0;
+      }
+
+      .avatar-zone {
+        min-height: 300px;
+      }
+
+      .game-stage {
+        min-height: 800px;
       }
 
       .slider-grid {
@@ -591,6 +1049,12 @@
       </div>
     </section>
 
+    <nav class="mode-tabs" aria-label="Modos de practica">
+      <button class="mode-tab active" data-mode="quizMode">Parcial por niveles</button>
+      <button class="mode-tab" data-mode="gameMode">Aprender jugando</button>
+    </nav>
+
+    <div class="mode-panel active" id="quizMode">
     <section class="quiz-shell" aria-label="Parcial por niveles">
       <nav class="tabs" aria-label="Niveles">
         <button class="tab active" data-level="basico">Basico 🟢</button>
@@ -621,6 +1085,65 @@
         <span class="feedback" id="feedback">Lee la teoria y presiona Iniciar parcial cuando estes listo.</span>
       </div>
     </section>
+    </div>
+
+    <div class="mode-panel" id="gameMode">
+      <section class="game-shell" aria-label="Juego Aprender jugando">
+        <div class="game-top">
+          <div>
+            <h2>Aprender jugando: Mision trigonometrica 🚀</h2>
+            <p>Dispara a la puerta correcta. Cada acierto abre un portal, suma vida y te acerca a una medalla.</p>
+          </div>
+          <div class="game-stats">
+            <div class="life-wrap">
+              <span id="lifeText">Vida: 100</span>
+              <div class="life-track" aria-label="Barra de vida">
+                <div class="life-fill" id="lifeFill"></div>
+              </div>
+            </div>
+            <div class="medals" id="medals"></div>
+          </div>
+        </div>
+        <div class="game-stage">
+          <canvas class="stars-canvas" id="starsCanvas" width="1100" height="620"></canvas>
+          <div class="laser" id="laser"></div>
+          <div class="game-world">
+            <div class="avatar-zone">
+              <div class="speech" id="gameSpeech">
+                Soy tu copiloto. Lee la instruccion, apunta con calma y dispara a la puerta correcta.
+              </div>
+              <div class="avatar" id="avatar" aria-label="Personaje astronauta">
+                <div class="helmet"><div class="visor"></div></div>
+                <div class="body-suit"></div>
+                <div class="arm left"></div>
+                <div class="arm right"></div>
+                <div class="leg left"></div>
+                <div class="leg right"></div>
+                <div class="blaster"></div>
+              </div>
+            </div>
+            <div class="doors-zone">
+              <div class="mission-card">
+                <div class="mission-meta">
+                  <span id="gameLevelLabel">Nivel basico</span>
+                  <span id="gameQuestionLabel">Pregunta 1/10</span>
+                </div>
+                <h3 id="gameQuestion">Presiona iniciar mision para comenzar.</h3>
+              </div>
+              <div class="doors-grid" id="doorsGrid"></div>
+              <div class="game-feedback" id="gameFeedback">
+                <strong>Mensaje de la nave:</strong> aqui veras apoyo y explicaciones despues de cada disparo.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="game-actions">
+          <button id="startGameBtn">Iniciar mision</button>
+          <button class="secondary-game" id="nextWorldBtn" disabled>Entrar al siguiente mundo</button>
+          <button id="resetGameBtn">Reiniciar juego</button>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer>
@@ -1058,6 +1581,251 @@
     validateBtn.addEventListener("click", validateQuiz);
     showProcessBtn.addEventListener("click", toggleProcess);
     retryBtn.addEventListener("click", retryQuiz);
+
+    document.querySelectorAll(".mode-tab").forEach(button => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".mode-tab").forEach(item => item.classList.remove("active"));
+        document.querySelectorAll(".mode-panel").forEach(panel => panel.classList.remove("active"));
+        button.classList.add("active");
+        document.getElementById(button.dataset.mode).classList.add("active");
+        if (button.dataset.mode === "gameMode") drawStars();
+      });
+    });
+
+    const gameLevels = ["basico", "intermedio", "avanzado"];
+    const gameState = {
+      started: false,
+      levelIndex: 0,
+      questionIndex: 0,
+      life: 100,
+      answeredCorrect: false,
+      completed: false,
+      medals: []
+    };
+
+    const lifeText = document.getElementById("lifeText");
+    const lifeFill = document.getElementById("lifeFill");
+    const medalsEl = document.getElementById("medals");
+    const gameSpeech = document.getElementById("gameSpeech");
+    const gameLevelLabel = document.getElementById("gameLevelLabel");
+    const gameQuestionLabel = document.getElementById("gameQuestionLabel");
+    const gameQuestion = document.getElementById("gameQuestion");
+    const doorsGrid = document.getElementById("doorsGrid");
+    const gameFeedback = document.getElementById("gameFeedback");
+    const startGameBtn = document.getElementById("startGameBtn");
+    const nextWorldBtn = document.getElementById("nextWorldBtn");
+    const resetGameBtn = document.getElementById("resetGameBtn");
+    const avatar = document.getElementById("avatar");
+    const laser = document.getElementById("laser");
+    const starsCanvas = document.getElementById("starsCanvas");
+    const starCtx = starsCanvas.getContext("2d");
+    const stars = Array.from({ length: 90 }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: Math.random() * 1.9 + .4,
+      speed: Math.random() * .45 + .15
+    }));
+
+    function levelName(level) {
+      return level === "basico" ? "Nivel basico" : level === "intermedio" ? "Nivel intermedio" : "Nivel avanzado";
+    }
+
+    function updateLife() {
+      const width = Math.max(0, Math.min(100, gameState.life));
+      lifeText.textContent = `Vida: ${gameState.life}`;
+      lifeFill.style.width = `${width}%`;
+      lifeFill.style.background = gameState.life >= 80
+        ? "linear-gradient(90deg, #22c55e, #bef264)"
+        : gameState.life >= 40
+          ? "linear-gradient(90deg, #f59e0b, #fde68a)"
+          : "linear-gradient(90deg, #ef4444, #fecaca)";
+    }
+
+    function updateMedals() {
+      medalsEl.innerHTML = gameLevels.map((level, index) => {
+        const earned = gameState.medals.includes(level);
+        return `<span class="medal ${earned ? "earned" : ""}">${earned ? "🏅" : "⚙"} ${index + 1}</span>`;
+      }).join("");
+    }
+
+    function currentGameQuestion() {
+      const level = gameLevels[gameState.levelIndex];
+      return quizzes[level].questions[gameState.questionIndex];
+    }
+
+    function renderGame() {
+      updateLife();
+      updateMedals();
+
+      if (!gameState.started) {
+        gameLevelLabel.textContent = "Mision lista";
+        gameQuestionLabel.textContent = "10 preguntas por nivel";
+        gameQuestion.textContent = "Presiona iniciar mision para activar el primer portal.";
+        doorsGrid.innerHTML = "";
+        gameSpeech.textContent = "Tienes 100 puntos de vida. Si fallas, no es fracaso: es informacion para ajustar estrategia.";
+        nextWorldBtn.disabled = true;
+        return;
+      }
+
+      if (gameState.completed) {
+        gameLevelLabel.textContent = "Campeon del sistema";
+        gameQuestionLabel.textContent = "Mision completa";
+        gameQuestion.textContent = "Completaste todos los mundos de trigonometria.";
+        doorsGrid.innerHTML = "";
+        gameSpeech.textContent = "Campeon: lo lograste porque persististe, revisaste y volviste a intentarlo. Esa es una habilidad universitaria real.";
+        gameFeedback.innerHTML = "<strong>Mensaje final:</strong> Tu resultado muestra disciplina mental. Sigue estudiando asi: paso a paso, con calma y usando cada error como pista.";
+        nextWorldBtn.disabled = true;
+        return;
+      }
+
+      const level = gameLevels[gameState.levelIndex];
+      const item = currentGameQuestion();
+      gameLevelLabel.textContent = levelName(level);
+      gameQuestionLabel.textContent = `Pregunta ${gameState.questionIndex + 1}/10`;
+      gameQuestion.textContent = item.q;
+      gameSpeech.textContent = "Elige una puerta. Apunta a la opcion que puedas justificar, no a la que solo parezca familiar.";
+      nextWorldBtn.disabled = !gameState.answeredCorrect;
+
+      doorsGrid.innerHTML = item.options.map((option, index) => `
+        <button class="door" data-answer="${index}" ${gameState.answeredCorrect ? "disabled" : ""}>
+          <span class="door-label">
+            <span class="door-letter">Puerta ${String.fromCharCode(65 + index)}</span>
+            <span>${option}</span>
+          </span>
+        </button>
+      `).join("");
+    }
+
+    function setDoorsDisabled(disabled) {
+      doorsGrid.querySelectorAll(".door").forEach(door => {
+        door.disabled = disabled;
+      });
+    }
+
+    function fireLaser() {
+      avatar.classList.remove("shoot");
+      laser.classList.remove("fire");
+      void avatar.offsetWidth;
+      avatar.classList.add("shoot");
+      laser.classList.add("fire");
+      setTimeout(() => {
+        avatar.classList.remove("shoot");
+        laser.classList.remove("fire");
+      }, 460);
+    }
+
+    function handleDoorClick(event) {
+      const door = event.target.closest(".door");
+      if (!door || !gameState.started || gameState.answeredCorrect || gameState.completed) return;
+      const item = currentGameQuestion();
+      const selected = Number(door.dataset.answer);
+      const correct = selected === item.answer;
+      fireLaser();
+      setDoorsDisabled(true);
+
+      if (correct) {
+        gameState.life += 10;
+        gameState.answeredCorrect = true;
+        door.classList.add("correct");
+        gameSpeech.textContent = "Portal abierto. Tu razonamiento encontro la ruta correcta.";
+        gameFeedback.innerHTML = `<strong>Excelente disparo.</strong> Sumaste 10 puntos de vida. ${item.process}`;
+        setTimeout(() => {
+          updateLife();
+          nextWorldBtn.disabled = false;
+        }, 260);
+      } else {
+        gameState.life -= 10;
+        door.classList.add("wrong");
+        gameSpeech.textContent = "Respira. Fallar una puerta no te cierra el camino: te muestra que concepto hay que ajustar.";
+        gameFeedback.innerHTML = `<strong>No te preocupes.</strong> Esta respuesta no abre el portal, pero estas aprendiendo. Revisa signo, cuadrante, rango o formula, y vuelve a intentarlo con calma.`;
+        updateLife();
+        if (gameState.life <= 0) {
+          gameSpeech.textContent = "Tu energia llego a cero, pero eso no habla de tu capacidad. Reinicia la mision y usa lo que ya descubriste.";
+          gameFeedback.innerHTML = "<strong>Pausa estrategica.</strong> En primer semestre es normal confundirse al inicio. La mejora viene de repetir con atencion, no de hacerlo perfecto a la primera.";
+        } else {
+          setTimeout(() => {
+            door.classList.remove("wrong");
+            setDoorsDisabled(false);
+          }, 700);
+        }
+      }
+    }
+
+    function advanceWorld() {
+      if (!gameState.answeredCorrect || gameState.completed) return;
+      const level = gameLevels[gameState.levelIndex];
+      gameState.questionIndex += 1;
+      gameState.answeredCorrect = false;
+
+      if (gameState.questionIndex >= quizzes[level].questions.length) {
+        if (!gameState.medals.includes(level)) gameState.medals.push(level);
+        gameState.levelIndex += 1;
+        gameState.questionIndex = 0;
+        if (gameState.levelIndex >= gameLevels.length) {
+          gameState.completed = true;
+          renderGame();
+          return;
+        }
+        const nextLevel = gameLevels[gameState.levelIndex];
+        gameFeedback.innerHTML = `<strong>Medalla ganada.</strong> Superaste ${levelName(level)}. Ahora entras a ${levelName(nextLevel)} con mas criterio y confianza.`;
+      } else {
+        gameFeedback.innerHTML = "<strong>Nuevo mundo.</strong> Mantén el ritmo: lee, identifica el concepto y dispara solo cuando puedas justificar.";
+      }
+      renderGame();
+    }
+
+    function startGame() {
+      if (gameState.started) return;
+      gameState.started = true;
+      gameFeedback.innerHTML = "<strong>Mision iniciada.</strong> Puedes equivocarte y seguir. La clave es pensar de nuevo, no rendirte.";
+      renderGame();
+    }
+
+    function resetGame() {
+      gameState.started = false;
+      gameState.levelIndex = 0;
+      gameState.questionIndex = 0;
+      gameState.life = 100;
+      gameState.answeredCorrect = false;
+      gameState.completed = false;
+      gameState.medals = [];
+      gameFeedback.innerHTML = "<strong>Mensaje de la nave:</strong> aqui veras apoyo y explicaciones despues de cada disparo.";
+      renderGame();
+    }
+
+    function drawStars() {
+      const rect = starsCanvas.getBoundingClientRect();
+      const ratio = window.devicePixelRatio || 1;
+      starsCanvas.width = Math.max(1, Math.floor(rect.width * ratio));
+      starsCanvas.height = Math.max(1, Math.floor(rect.height * ratio));
+      starCtx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    }
+
+    function animateStars() {
+      const rect = starsCanvas.getBoundingClientRect();
+      starCtx.clearRect(0, 0, rect.width, rect.height);
+      starCtx.fillStyle = "rgba(186, 230, 253, .82)";
+      stars.forEach(star => {
+        star.x -= star.speed / 900;
+        if (star.x < 0) {
+          star.x = 1;
+          star.y = Math.random();
+        }
+        starCtx.beginPath();
+        starCtx.arc(star.x * rect.width, star.y * rect.height, star.r, 0, Math.PI * 2);
+        starCtx.fill();
+      });
+      requestAnimationFrame(animateStars);
+    }
+
+    doorsGrid.addEventListener("click", handleDoorClick);
+    startGameBtn.addEventListener("click", startGame);
+    nextWorldBtn.addEventListener("click", advanceWorld);
+    resetGameBtn.addEventListener("click", resetGame);
+    window.addEventListener("resize", drawStars);
+    renderGame();
+    drawStars();
+    animateStars();
 
     const angleRange = document.getElementById("angleRange");
     const angleReadout = document.getElementById("angleReadout");
